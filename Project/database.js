@@ -7,15 +7,16 @@ const mssql = require('mssql');
 
 //Database configuratino
 const config = {
-  user: 'sa',
-  password: 'password',
-  server: 'SETH\\SQLEXPRESS',
-  database: 'testDB',
+  user: 'azureuser',
+  password: 'b4y3r83}9',
+  server: 'bayer-mssql.database.windows.net',
+  database: 'mySampleDatabase',
   options: {
-    encrypt: false,
+    encrypt: true,
     trustServerCertificate: true,
   },
 };
+
 
 //API route for fetching data from the database
 router.get('/data', async (req, res) => {
