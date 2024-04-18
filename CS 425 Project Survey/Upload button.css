@@ -1,0 +1,61 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+}
+
+.container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.upload-btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #ccc;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.green-btn, .red-btn {
+    display: inline-block;
+    width: calc(50% - 5px);
+    padding: 10px;
+    background-color: #4caf50; /* Green */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.red-btn {
+    background-color: #f44336; /* Red */
+}
+
+.blue-btn {
+    background-color: #007bff; /* Blue */
+    color: #fff; /* Text color */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 10px;
+    width: 100%; /* Make button full width */
+    margin-top: 20px; /* Add margin at the top */
+}
+
+.blue-btn:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+.btn-container {
+    margin-top: 20px;
+    text-align: center;
+}
+

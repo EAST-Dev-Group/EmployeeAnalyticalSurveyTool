@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survey Results</title>
+    <link rel="stylesheet" href="FinalScreen.css">
+    <style>
+       
+        #searchInput {
+            margin-bottom: 10px;
+        }
+       
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+    <h1>Survey Results</h1>
+    <div class="container">
+        <!-- Add a search input closer to the comments section -->
+        <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Search" style="width: 100%; margin-bottom: 10px;">
+        <table id="surveyTable">
+            <thead>
+                <tr>
+                    <th>Record Date</th>
+                    <th>Response ID</th>
+                    <th>Satisfaction Rating</th>
+                    <th>CIST Org</th>
+                    <th>Direct/Indirect</th>
+                    <th>Comments</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>2024-02-29</td>
+                    <td>123143167</td>
+                    <td>5</td>
+                    <td>Product Platforms</td>
+                    <td>Direct</td>
+                    <td>Great service! - Jim</td>
+                </tr>
+                <tr>
+                    <td>2024-02-18</td>
+                    <td>123982129</td>
+                    <td>4</td>
+                    <td>Decision Science</td>
+                    <td>Indirect</td>
+                    <td>Good! - Aaron</td>
+                </tr>
+                <tr>
+                    <td>2024-02-16</td>
+                    <td>123421921</td>
+                    <td>3</td>
+                    <td>Decision Science</td>
+                    <td>Indirect</td>
+                    <td>Great! - Jim</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <script src="FinalScreen.js" defer></script>
+</body>
+</html>
+
+

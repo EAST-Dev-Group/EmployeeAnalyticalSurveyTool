@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Survey Home</title>
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f9f9f9;
+    }
+    .container {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 30px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+    h1 {
+        color: #333;
+        font-size: 36px;
+        margin-bottom: 20px;
+    }
+    p {
+        color: #666;
+        font-size: 18px;
+        margin-bottom: 30px;
+    }
+    .btn {
+        display: inline-block;
+        padding: 15px 30px;
+        background-color: #4CAF50;
+        color: #fff;
+        font-size: 20px;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+    .btn:hover {
+        background-color: #45a049;
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <h1>Upload Surveys Here</h1>
+        <p>Please upload your survey files below.</p>
+        <link rel="stylesheet" href="Upload button.css">
+        <div class="container">
+            <input type="file" class="upload-btn" multiple>
+            <div class="btn-container">
+                <button class="green-btn" onclick="confirmUpload()">Confirm</button>
+                <button class="red-btn" onclick="window.location.href='homepage.html'">Cancel</button>
+            </div>
+            <button class="blue-btn" onclick="window.location.href='FinalScreen.html'">View Survey Results</button>
+        </div>
+        <script src="Upload button.js"></script>
+    </div>
+</body>
+</html>
