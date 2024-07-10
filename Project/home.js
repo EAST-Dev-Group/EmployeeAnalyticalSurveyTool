@@ -4,8 +4,8 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const { router, fetchData } = require('./database');
-const { upload, uploadFile } = require('./upload');
+const { router, fetchUploadedData } = require('./database');
+const { uploadFile, upload } = require('./upload');
 
 //Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
@@ -21,13 +21,13 @@ app.get('/', (req, res) => {
 app.post('/upload', upload.single('file'), async (req, res) => {
   try {
     //Upload file and insert data into database
-    await uploadFile(req, res);
+    const uploadId = await uploadFile(req, res);
 
     //Fetch the updated data from the database
-    const data = await fetchData();
+    const uploadedData = await fetchUploadedData(uploadId);
 
     //Send the updated data as a JSON response
-    res.json(data);
+    res.json(uploadedData);
   } catch (err) {
     console.error('Error:', err);
     res.status(500).send('Internal Server Error');

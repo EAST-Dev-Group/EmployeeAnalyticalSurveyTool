@@ -1,121 +1,59 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Excel File Upload</title>
-  <style>
-    /* CSS styles for the page */
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-    }
-    
-    h1 {
-      text-align: center;
-    }
-    
-    form {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      display: none;
-    }
-    
-    th, td {
-      padding: 8px;
-      text-align: left;
-      border-bottom: 1px solid #ddd;
-    }
-    
-    th {
-      background-color: #f2f2f2;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survey Responses</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h1>Excel File Upload</h1>
-  
-  <!-- File upload form -->
-  <form action="/upload" method="post" enctype="multipart/form-data">
-    <input type="file" name="file" accept=".xlsx, .xls">
-    <input type="submit" value="Upload">
-  </form>
-  
-  <!-- Table to display the uploaded data-->
-  <table id="dataTable">
-    <thead>
-      <tr>
-        <th>Recorded Date</th>
-        <th>Response Id</th>
-        <th>Satisfaction Rating</th>
-        <th>CSIT Org</th>
-        <th>Direct/Indirect</th>
-        <th>Comments</th>
-      </tr>
-    </thead>
-    <tbody id="dataTableBody"></tbody>
-  </table>
+    <h1>Survey Responses</h1>
+    <div class="upload-container">
+        <input type="file" id="fileInput" accept=".xlsx, .xls" style="display: none;">
+        <label for="fileInput" class="custom-file-upload">Choose File</label>
+        <span id="fileNameDisplay"></span>
+        <button onclick="uploadFile()" class="upload-button">Upload</button>
+    </div>
+    <div class="resizable">
+        <div class="data-window">
+            <table id="dataTable">
+                <!--Sorting Dropdown Boxes-->
+                <div class="sort-controls">
+                    <div class="sort-group">
+                        <label for="sortRecordedDate">Recorded Date</label>
+                        <select id="sortRecordedDate">
+                            <option value="" disabled selected>- Select -</option>
+                            <option value="asc">Oldest to Newest</option>
+                            <option value="desc">Newest to Oldest</option>
+                        </select>
+                    </div>
+                        <button id="confirmSort" class="confirmSort">Confirm Sort</button>
+                </div>
 
-  <script>
-    //Event listener for form submission
-    document.querySelector('form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const formData = new FormData(e.target);
-      const response = await fetch('/upload', {
-        method: 'POST',
-        body: formData
-      });
-      const data = await response.json();
-      displayData(data);
-    });
+                <!--Search Bar-->
+                <div class="search-container">
+                    <input type="text" id="searchInput" placeholder="Search..." onkeyup="searchTable()">
+                </div>
 
-    //Function to display the uploaded data in the table
-    function displayData(data) {
-      const table = document.getElementById('dataTable');
-      const tableBody = document.getElementById('dataTableBody');
-      tableBody.innerHTML = '';
-
-      if (data.length > 0) {
-        data.forEach(item => {
-          const row = document.createElement('tr');
-
-          //Format the date
-          const recordedDate = new Date(item['Recorded Date']);
-          const formattedDate = formatDate(recordedDate);
-
-          //Create table row with the data
-          row.innerHTML = `
-            <td>${formattedDate}</td>
-            <td>${item['Response Id']}</td>
-            <td>${item['Satisfaction Rating']}</td>
-            <td>${item['CSIT Org']}</td>
-            <td>${item['Direct/Indirect']}</td>
-            <td>${item['Comments']}</td>
-          `;
-          tableBody.appendChild(row);
-        });
-
-        table.style.display = 'table';
-      } else {
-        table.style.display = 'none';
-      }
-    }
-
-    //Function to format the date
-    function formatDate(date) {
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const day = String(date.getDate()).padStart(2, '0');
-      const hours = String(date.getHours()).padStart(2, '0');
-      const minutes = String(date.getMinutes()).padStart(2, '0');
-      const seconds = String(date.getSeconds()).padStart(2, '0');
-
-      return `${month}-${day}-${year} ${hours}:${minutes}:${seconds}`;
-      
-    }
-  </script>
+                <thead>
+                    <tr>
+                        <th class="line-number">#</th>
+                        <th>Recorded Date</th>
+                        <th>Response Id</th>
+                        <th>Satisfaction Rating</th>
+                        <th>CSIT Org</th>
+                        <th>Direct/Indirect</th>
+                        <th>Comments</th>
+                    </tr>
+                </thead>
+                <tbody id="dataBody"></tbody>
+            </table>
+        </div>
+        <div class="resizer resizer-r"></div>
+        <div class="resizer resizer-b"></div>
+        <div class="resizer resizer-rb"></div>
+    </div>
+    
+    <script src="script.js"></script>
 </body>
 </html>
