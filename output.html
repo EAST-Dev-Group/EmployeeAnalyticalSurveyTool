@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survey Responses</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+</head>
+<body>
+    <h1>Survey Responses</h1>
+    <div class="upload-container">
+        <input type="file" id="fileInput" accept=".xlsx, .xls" style="display: none;">
+        <label for="fileInput" class="custom-file-upload">Choose File</label>
+        <span id="fileNameDisplay"></span>
+        <button onclick="uploadFile()" class="upload-button">Upload</button>
+    </div>
+    <div class="resizable">
+        <div class="data-window">
+            <table id="dataTable">
+                <!--Sorting Dropdown Boxes-->
+                <div class="sort-controls">
+                    <div class="sort-group">
+                        <label for="sortRecordedDate">Recorded Date</label>
+                        <select id="sortRecordedDate">
+                            <option value="" disabled selected>- Select -</option>
+                            <option value="asc">Oldest to Newest</option>
+                            <option value="desc">Newest to Oldest</option>
+                        </select>
+                    </div>
+                        <button id="confirmSort" class="confirmSort">Confirm Sort</button>
+                </div>
+
+                <!--Search Bar-->
+                <div class="search-container">
+                    <input type="text" id="searchInput" placeholder="Search..." onkeyup="searchTable()">
+                </div>
+
+                <thead>
+                    <tr>
+                        <th class="line-number">#</th>
+                        <th>Recorded Date</th>
+                        <th>Response Id</th>
+                        <th>Satisfaction Rating</th>
+                        <th>CSIT Org</th>
+                        <th>Direct/Indirect</th>
+                        <th>Comments</th>
+                    </tr>
+                </thead>
+                <tbody id="dataBody"></tbody>
+            </table>
+        </div>
+        <div class="resizer resizer-r"></div>
+        <div class="resizer resizer-b"></div>
+        <div class="resizer resizer-rb"></div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
