@@ -8,6 +8,7 @@ h1 {
     text-transform: uppercase;
     position: relative;
     padding-bottom: 4px;
+    font-family: sans-serif;
 }
 
 .resizable {
@@ -23,6 +24,8 @@ h1 {
     border: 1px solid #ccc;
     padding: 10px;
     box-sizing: border-box;
+    font-family: sans-serif;
+    
 }
 .resizer {
     position: absolute;
@@ -57,6 +60,7 @@ th, td {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: left;
+    font-family: sans-serif;
 }
 th {
     background-color: #f2f2f2;
@@ -66,6 +70,7 @@ th {
     text-align: right;
     color: #888;
     padding-right: 10px;
+    font-family: sans-serif;
 }
 .comment-cell {
     position: relative;
@@ -77,11 +82,11 @@ th {
   transition: max-height 0.3s ease-out;
   white-space: pre-wrap;
   word-wrap: break-word;
-  font-family: inherit;
+  font-family: sans-serif;
   margin: 0;
 }
 .comment-expanded {
-    max-height: 1000px;
+    max-height: none;
 }
 .expand-button {
     position: absolute;
@@ -89,10 +94,11 @@ th {
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
-    color: blue;
+    color: #0077b5;
     text-decoration: none;
-    font-size: 18px;
-    line-height: 1;
+    font-size: 20px;
+    font-weight: bold;
+    -webkit-text-stroke: 0.3px #0077b5;
 }
 
 .sort-controls {
@@ -130,6 +136,7 @@ th {
     background-repeat: no-repeat;
     background-position: right 8px top 50%;
     padding-right: 30px;
+    font-family: sans-serif;
 }
 
 #sortRecordedDate::-ms-expand {
@@ -160,6 +167,7 @@ th {
     font-size: 14px;
     transition: background-color 0.3s ease;
     margin-top: 20px;
+    font-family: sans-serif;
 }
 .confirmSort:hover {
     background-color: #0056b3;
@@ -189,6 +197,7 @@ th {
     display: inline-block;
     margin-right: 12px;
     transition: all 0.3s ease;
+    font-family: sans-serif;
 }
 
 .custom-file-upload:before {
@@ -212,6 +221,7 @@ th {
     font-size: 14px;
     font-weight: normal;
     transition: all 0.3s ease;
+    font-family: sans-serif;
 }
 
 .upload-button:hover {
@@ -222,6 +232,7 @@ th {
     margin-right: 12px;
     font-size: 14px;
     color: #555;
+    font-family: sans-serif;
 }
 .search-container {
     margin: 10px 0;
@@ -234,4 +245,5 @@ th {
     border: 1px solid #ddd;
     border-radius: 4px;
     background-color: #f8f8f8;
+    font-family: sans-serif;
 }
