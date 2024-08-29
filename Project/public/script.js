@@ -22,7 +22,9 @@ function displayData(data) {
           <td>${row['Direct/Indirect']}</td>
           <td class="comment-cell">
             <pre class="comment-content">${escapeHtml(row['Comments'])}</pre>
-            <span class="expand-button" onclick="toggleComment(this, event)">▼</span>
+            <span class="expand-button" onclick="toggleComment(this, event)">
+                <i class="bi bi-plus-circle"></i>
+            </span>
           </td>
         `;
         tableBody.appendChild(tr);
@@ -58,10 +60,10 @@ function toggleComment(button, event) {
     const commentPre = button.previousElementSibling;
     if (commentPre.classList.contains('comment-expanded')) {
         commentPre.classList.remove('comment-expanded');
-        button.textContent = '▼';
+        button.innerHTML = '<i class="bi bi-plus-circle"></i>';
     } else {
         commentPre.classList.add('comment-expanded');
-        button.textContent = '▲';
+        button.innerHTML = '<i class="bi bi-dash-circle"></i>';
     }
 }
 
