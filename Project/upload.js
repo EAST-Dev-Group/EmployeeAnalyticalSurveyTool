@@ -5,6 +5,7 @@ const mssql = require('mssql');
 const multer = require('multer');
 const xlsx = require('xlsx');
 const sanitizeHtml = require('sanitize-html');
+const { v4: uuidv4 } = require('uuid');
 
 //Database configuration
 const config = {
@@ -30,6 +31,7 @@ const uploadFile = async (req, res) => {
     const sheetName = workbook.SheetNames[0];
     const sheet = workbook.Sheets[sheetName];
     let data = xlsx.utils.sheet_to_json(sheet, { header: 1, dateNF: 'yyyy-mm-dd' });
+    const uploadId = uuidv4(); //Generate new UUID for this upload
 
     //Sanitize and format the data
     data = data.map(row => {
@@ -59,28 +61,39 @@ const uploadFile = async (req, res) => {
 
     //Create table if it doesn't exist
     const createTableQuery = `
-      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Sheet1$' AND xtype='U')
-      CREATE TABLE Sheet1$ (
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='SurveyResponses' AND xtype='U')
+      CREATE TABLE SurveyResponses (
+        [Response Id] VARCHAR(50) PRIMARY KEY,
         [Recorded Date] DATETIME,
-        [Response Id] VARCHAR(50),
         [Satisfaction Rating] INT,
         [CSIT Org] VARCHAR(50),
         [Direct/Indirect] VARCHAR(50),
-        [Comments] VARCHAR(MAX)
+        [Comments] VARCHAR(MAX),
+        [UploadedAt] DATETIME DEFAULT GETDATE(),
+        [LastUpdatedAt] DATETIME DEFAULT GETDATE(),
+        [UploadID] UNIQUEIDENTIFIER,
       );
     `;
     await pool.request().query(createTableQuery);
 
-    //Truncate the table before inserting new data
-    const truncateTableQuery = `
-      TRUNCATE TABLE Sheet1$;
-    `;
-    await pool.request().query(truncateTableQuery);
-
-    //Insert data into database
-    const insertDataQuery = `
-      INSERT INTO Sheet1$ ([Recorded Date], [Response Id], [Satisfaction Rating], [CSIT Org], [Direct/Indirect], [Comments])
-      VALUES (@recordedDate, @responseId, @satisfactionRating, @csitOrg, @directIndirect, @comments);
+    // Prepare the insert/update query
+    const upsertDataQuery = `
+    MERGE INTO SurveyResponses AS target
+    USING (VALUES (@responseId, @recordedDate, @satisfactionRating, @csitOrg, @directIndirect, @comments, @uploadId))
+      AS source ([Response Id], [Recorded Date], [Satisfaction Rating], [CSIT Org], [Direct/Indirect], [Comments], UploadID)
+    ON target.[Response Id] = source.[Response Id]
+    WHEN MATCHED THEN
+      UPDATE SET
+        [Recorded Date] = source.[Recorded Date],
+        [Satisfaction Rating] = source.[Satisfaction Rating],
+        [CSIT Org] = source.[CSIT Org],
+        [Direct/Indirect] = source.[Direct/Indirect],
+        [Comments] = source.[Comments],
+        [UploadID] = source.UploadID,
+        [LastUpdatedAt] = GETDATE()
+    WHEN NOT MATCHED THEN
+      INSERT ([Response Id], [Recorded Date], [Satisfaction Rating], [CSIT Org], [Direct/Indirect], [Comments], UploadID)
+      VALUES (source.[Response Id], source.[Recorded Date], source.[Satisfaction Rating], source.[CSIT Org], source.[Direct/Indirect], source.[Comments], source.UploadID);
     `;
     
     for (const row of data) {
@@ -93,14 +106,16 @@ const uploadFile = async (req, res) => {
           .input('csitOrg', mssql.VarChar, csitOrg)
           .input('directIndirect', mssql.VarChar, directIndirect)
           .input('comments', mssql.VarChar, comments)
-          .query(insertDataQuery);
+          .input('uploadId', mssql.UniqueIdentifier, uploadId)
+          .query(upsertDataQuery);
       }
     }
 
     console.log('Data uploaded successfully.');
+    return uploadId;
   } catch (err) {
     console.error('Error:', err);
-    res.status(500).send('Internal Server Error');
+    throw err;
   } finally {
     await mssql.close();
   }
