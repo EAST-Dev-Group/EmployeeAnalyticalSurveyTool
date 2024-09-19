@@ -1,0 +1,361 @@
+h1 {
+    color: #333;
+    font-size: 32px;
+    text-align: center;
+    margin: 30px 0;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    position: relative;
+    padding-bottom: 4px;
+    font-family: sans-serif;
+}
+
+.resizable {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    margin-bottom: 20px;
+}
+
+.data-window {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+.resizer {
+    position: absolute;
+    background: transparent;
+}
+
+.resizer-r {
+    cursor: ew-resize;
+    height: 100%;
+    right: -5px;
+    top: 0;
+    width: 10px;
+}
+
+.resizer-b {
+    cursor: ns-resize;
+    height: 10px;
+    left: 0;
+    bottom: -5px;
+    width: 100%;
+}
+
+.resizer-rb {
+    cursor: nwse-resize;
+    height: 10px;
+    width: 10px;
+    right: -5px;
+    bottom: -5px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    font-family: sans-serif;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+.line-number {
+    width: 50px;
+    text-align: right;
+    color: #888;
+    padding-right: 10px;
+    font-family: sans-serif;
+}
+
+.comment-cell {
+    position: relative;
+    padding-right: 30px;
+}
+
+.comment-content {
+    max-height: 20px;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: sans-serif;
+    margin: 0;
+}
+
+.comment-expanded {
+    max-height: none;
+}
+
+.expand-button {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #0077b5;
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: bold;
+    -webkit-text-stroke: 0.3px #0077b5;
+}
+
+.sort-controls {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sort-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.sort-group label {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 0px;
+    margin-left: 4px;
+}
+
+#sortRecordedDate {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    width: 160px;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23333" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 8px top 50%;
+    padding-right: 30px;
+    font-family: sans-serif;
+}
+
+#sortRecordedDate::-ms-expand {
+    display: none;
+}
+
+#sortRecordedDate option {
+    color: #333;
+}
+
+#sortRecordedDate option:first-child {
+    color: #999;
+}
+
+#sortRecordedDate:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0,123,255,.25);
+}
+
+.confirmSort {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+    font-family: sans-serif;
+}
+
+.confirmSort:hover {
+    background-color: #0056b3;
+}
+
+.upload-container {
+    background-color: #f2f2f2;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 12px 20px;
+    margin: 15px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 600px;
+    flex-wrap: wrap;
+}
+
+.custom-file-upload {
+    background-color: #26ad46;
+    color: #ffffff;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: normal;
+    display: inline-block;
+    margin-right: 12px;
+    transition: all 0.3s ease;
+    font-family: sans-serif;
+}
+
+.custom-file-upload:before {
+    content: "+";
+    margin-right: 6px;
+    font-weight: bold;
+}
+
+.custom-file-upload:hover {
+    background-color: #1d8035;
+    color: #ffffff;
+}
+
+.upload-button {
+    background-color: #007bff;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: normal;
+    transition: all 0.3s ease;
+    font-family: sans-serif;
+}
+
+.upload-button:hover {
+    background-color: #0056b3;
+}
+
+#fileNameDisplay {
+    margin-right: 12px;
+    font-size: 14px;
+    color: #555;
+    font-family: sans-serif;
+}
+
+.search-container {
+    margin: 10px 0;
+}
+
+#searchInput {
+    width: 99%;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    font-family: sans-serif;
+}
+
+.clear-button {
+    background-color: #f44336; 
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: normal;
+    transition: all 0.3s ease;
+}
+
+.clear-button:hover {
+    background-color: #d32f2f;
+}
+
+.confirmSort, .clear-button {
+    margin: 10px 5px; 
+}
+
+.button-group {
+    display: flex;
+    gap: 10px; 
+}
+
+#ratingsWrapper {
+    display: flex;
+    gap: 20px; /* Space between the overall and CSIT org rating boxes */
+    justify-content: flex-start; /* Align items to the left */
+    align-items: center; /* Vertically center the boxes */
+    flex-wrap: nowrap; /* Prevent items from wrapping to the next line */
+}
+
+#averageRatingContainer {
+    background-color: #FFD3AC;
+    border: 2px solid #000;
+    border-radius: 10px; /* Add rounded corners */
+    color: #fff;
+    text-align: center;
+    width: 120px;
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    font-family: sans-serif;
+}
+
+#csitOrgAveragesContainer {
+    display: flex;
+    gap: 10px;
+    flex-wrap: nowrap;
+}
+
+.averageRatingContainer {
+    background-color: #FFD3AC;
+    border: 2px solid #000;
+    border-radius: 10px; /* Add rounded corners */
+    color: #fff;
+    text-align: center;
+    width: 120px;
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    font-family: sans-serif;
+}
+
+.averageRatingContainer h2 {
+    font-size: 14px;
+    color: #fff;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    margin-bottom: 5px;
+}
+
+.rating-box {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+#averageRating {
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+
+.star {
+    font-size: 24px;
+    color: #ffd700;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
