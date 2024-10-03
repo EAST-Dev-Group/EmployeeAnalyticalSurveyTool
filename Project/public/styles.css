@@ -11,13 +11,59 @@ h1 {
     font-family: sans-serif;
 }
 
+/*new*/
+.data-container {
+    position: relative;
+    overflow: hidden;
+    width: 94%;
+    margin: 0 auto;
+  }
+
+/*new*/
+.button-container {
+    text-align: right;
+    height: 40px;
+}
+
 .resizable {
     position: relative;
     width: 100%;
     height: 400px;
     margin-bottom: 20px;
 }
+/*new*/
+#uploadedDataWindow, #allDataWindow {
+    transition: transform 0.5s ease-in-out;
+    width: 100%;
+}
+
+/*new*/
+#allDataWindow {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    width: 100%;
+    height: 100%;
+}
+
+/*new*/
+.view-all-btn, .view-single-btn {
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.view-all-btn:hover, .view-single-btn:hover {
+  background-color: #0056b3;
+}
+  
 .data-window {
+    position: relative;
     width: 100%;
     height: 100%;
     overflow: auto;
@@ -25,32 +71,32 @@ h1 {
     padding: 10px;
     box-sizing: border-box;
     font-family: sans-serif;
-    
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 .resizer {
     position: absolute;
-    background: transparent;
+    z-index: 10;
 }
 .resizer-r {
     cursor: ew-resize;
     height: 100%;
-    right: -5px;
+    right: 0px;
     top: 0;
-    width: 10px;
+    width: 5px;
 }
 .resizer-b {
     cursor: ns-resize;
-    height: 10px;
+    height: 5px;
     left: 0;
-    bottom: -5px;
+    bottom: 0px;
     width: 100%;
 }
 .resizer-rb {
     cursor: nwse-resize;
     height: 10px;
     width: 10px;
-    right: -5px;
-    bottom: -5px;
+    right: 0px;
+    bottom: 0px;
 }
 table {
     width: 100%;
@@ -102,7 +148,6 @@ th {
 }
 
 .sort-controls {
-    margin-bottom: 10px;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -137,6 +182,7 @@ th {
     background-position: right 8px top 50%;
     padding-right: 30px;
     font-family: sans-serif;
+    margin-bottom: 10px;
 }
 
 #sortRecordedDate::-ms-expand {
@@ -168,6 +214,7 @@ th {
     transition: background-color 0.3s ease;
     margin-top: 20px;
     font-family: sans-serif;
+    margin-bottom: 10px;
 }
 .confirmSort:hover {
     background-color: #0056b3;
@@ -234,16 +281,44 @@ th {
     color: #555;
     font-family: sans-serif;
 }
+
 .search-container {
-    margin: 10px 0;
+    position: absolute;
+    margin-top: 20px;
+    right: 10px;
+    display: flex;
+    z-index: 10;
+    margin-bottom: 10px;
 }
 
-#searchInput {
-    width: 99%;
+.search-input {
+    position: absolute;
+    right: 35px;
+    top: 0;
     padding: 8px;
     font-size: 14px;
     border: 1px solid #ddd;
     border-radius: 4px;
     background-color: #f8f8f8;
     font-family: sans-serif;
+    width: 200px;
+    display: none;
+    transition: all 0.3s ease;
+}
+
+.search-toggle {
+    position: absolute;
+    right: 0;
+    top: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: #007bff;
+    padding: 5px;
+    transition: all 0.3s ease;
+}
+  
+.search-toggle:hover {
+    color: #0056b3;
 }
