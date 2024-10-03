@@ -4,17 +4,26 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const { router, fetchUploadedData } = require('./database');
+const { router, fetchUploadedData, fetchAllData} = require('./database');
 const { uploadFile, upload } = require('./upload');
 
 //Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
+
 //Use router for handling API routes
 app.use('/api', router);
 
 //Route for serving the 'output.html' file
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'output.html'));
+});
+
+app.get('/output.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'output.html'));
+});
+
+app.get('/output2.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'output2.html'));
 });
 
 //Route for handling file upload
@@ -28,6 +37,18 @@ app.post('/upload', upload.single('file'), async (req, res) => {
 
     //Send the updated data as a JSON response
     res.json(uploadedData);
+  } catch (err) {
+    console.error('Error:', err);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+//new
+// Add this route to your existing home.js
+app.get('/api/allData', async (req, res) => {
+  try {
+    const allData = await fetchAllData();
+    res.json(allData);
   } catch (err) {
     console.error('Error:', err);
     res.status(500).send('Internal Server Error');
