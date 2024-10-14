@@ -4,6 +4,8 @@ import { BarChart } from '@mui/x-charts/BarChart';
 import logo from './logo.svg';
 import './App.css';
 
+
+
 function App() {
   return (
     <BarChart
@@ -16,6 +18,8 @@ function App() {
       ]}
     series={[
       {
+        //This will need updated to fetch a total count of each satisfaction rating
+        //TODO: Look into only fetching queried data by the user then plotting that data.
         data: [2, 5, 3, 7, 8],
       },
       ]}
