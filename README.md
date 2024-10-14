@@ -10,8 +10,11 @@ How to start node server:
 2. open up project in vscode and ensure you are in the 'project' directory
 3. type npm install in vs code terminal
    - this will install all necessary node.js libraries found in the .json file
-4. type node home.js in vs code terminal
-  - this starts up your local web server
+4. type npm run build in vs code terminal
+   - this will compile the code
+   - if errors show up because of a unknown module, install that module
+5. type npm run server in vs code terminal
+   - this will start up the server
 5. go to localhost:8080 in browser
 6. choose the excel file and hit upload
 7. you will see an alert message that the file was uploaded on the website (estimated 10s)
