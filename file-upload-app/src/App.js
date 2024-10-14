@@ -7,8 +7,18 @@ import './App.css';
 function App() {
   return (
     <BarChart
-      xAxis={[{ scaleType: 'band', data: ['group A', 'group B', 'group C'] }]}
-      series={[{ data: [4, 3, 5] }, { data: [1, 6, 3] }, { data: [2, 5, 6] }]}
+    xAxis={[
+      {
+        id: 'barCategories',
+        data: ['1 Star', '2 Star', '3 Stars', '4 Stars', '5 Stars'],
+        scaleType: 'band',
+      },
+      ]}
+    series={[
+      {
+        data: [2, 5, 3, 7, 8],
+      },
+      ]}
       width={500}
       height={300}
     />
