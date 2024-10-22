@@ -10,7 +10,7 @@ function ExpandableCell({ value }) {
   return (
     <div>
       {expanded ? value : value.slice(0, 200)}&nbsp;
-      {value.length > 200 && (
+      {value && value.length > 200 && (
         <Link
           component="button"
           sx={{ fontSize: 'inherit', letterSpacing: 'inherit' }}
@@ -23,14 +23,51 @@ function ExpandableCell({ value }) {
   );
 }
 
-function DataDisplay({ view }) {
-  const [data, setData] = useState([]);
+function DataDisplay({ view, data: initialData }) {
+  const [displayData, setDisplayData] = useState([]);
   const [columns, setColumns] = useState([]);
   const [pageSize, setPageSize] = useState(5);
 
   useEffect(() => {
-    fetchData();
-  }, [view]);
+    if (view === 'single' && initialData) {
+      processData(initialData);
+    } else if (view === 'all') {
+      fetchAllData();
+    } else if (view === 'single' && !initialData) {
+      fetchData();
+    }
+  }, [view, initialData]);
+
+  const processData = (data) => {
+    if (data && data.length > 0) {
+      const cols = [
+        ...Object.keys(data[0])
+          .filter(key => !['UploadedAt', 'LastUpdatedAt', 'UploadID', 'id'].includes(key))  // Add 'id' to filtered keys
+          .map(key => ({
+            field: key,
+            headerName: key === 'id' ? 'ID' : key,
+            width: key === 'Comments' ? 400 : 150,
+            editable: true,
+            renderCell: key === 'Comments' 
+              ? (params) => <ExpandableCell {...params} />
+              : undefined
+          }))
+      ];
+      
+      // Add ID column at the beginning
+      cols.unshift({ field: 'id', headerName: 'ID', width: 70 });
+      
+      setColumns(cols);
+
+      const rowsWithId = data.map((row, index) => ({
+        id: row.id || index + 1,
+        ...row,
+        'Recorded Date': formatDate(row['Recorded Date'])
+      }));
+
+      setDisplayData(rowsWithId);
+    }
+  };
 
   const formatDate = (dateString) => {
     if (!dateString) return '';
@@ -41,38 +78,18 @@ function DataDisplay({ view }) {
 
   const fetchData = async () => {
     try {
-      const url = view === 'all' ? '/api/allData' : '/api/data';
-      const response = await axios.get(url);
-      const responseData = response.data;
-      
-      if (responseData.length > 0) {
-        const cols = [
-          { field: 'id', headerName: 'ID', width: 70 },
-          ...Object.keys(responseData[0])
-          .filter(key => !['UploadedAt', 'LastUpdatedAt', 'UploadID'].includes(key))
-          .map(key => ({
-            field: key,
-            headerName: key,
-            width: key === 'Comments' ? 400 : 150,
-            editable: true,
-            renderCell: key === 'Comments' 
-              ? (params) => <ExpandableCell {...params} />
-              : undefined
-          }))
-        ];
-        setColumns(cols);
-      }
+      const response = await axios.get('/api/data');
+      processData(response.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
 
-      const rowsWithId = responseData.map((row, index) => {
-        const { UploadedAt, LastUpdatedAt, UploadID, ...rest } = row;
-        return {
-          id: index + 1,
-          ...rest,
-          'Recorded Date': formatDate(rest['Recorded Date'])
-        };
-      });
-
-      setData(rowsWithId);
+  //new
+  const fetchAllData = async () => {
+    try {
+      const response = await axios.get('/api/allData');
+      processData(response.data);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -82,7 +99,7 @@ function DataDisplay({ view }) {
     <div className="data-container">
       <div style={{ height: 400, width: '100%', marginBottom: '20px' }}>
         <DataGrid
-          rows={data}
+          rows={displayData}
           columns={columns}
           pageSize={pageSize}
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
