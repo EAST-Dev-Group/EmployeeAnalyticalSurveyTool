@@ -4,39 +4,23 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const { router, fetchUploadedData, fetchAllData} = require('./database');
+const multer = require('multer');
+const { fetchData, fetchUploadedData, fetchAllData} = require('./database');
 const { uploadFile, upload } = require('./upload');
 
 //Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, '../build')));
 
-//Use router for handling API routes
-app.use('/api', router);
-
-//Route for serving the 'index.html' file
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../build', 'index.html'));
-});
-
-//Route for handling file upload
-app.post('/upload', upload.single('file'), async (req, res) => {
+app.get('/api/data', async (req, res) => {
   try {
-    //Upload file and insert data into database
-    const uploadId = await uploadFile(req, res);
-
-    //Fetch the updated data from the database
-    const uploadedData = await fetchUploadedData(uploadId);
-
-    //Send the updated data as a JSON response
-    res.json(uploadedData);
+    const data = await fetchData();
+    res.json(data);
   } catch (err) {
     console.error('Error:', err);
     res.status(500).send('Internal Server Error');
   }
 });
 
-//new
-// Add this route to your existing home.js
 app.get('/api/allData', async (req, res) => {
   try {
     const allData = await fetchAllData();
@@ -45,6 +29,40 @@ app.get('/api/allData', async (req, res) => {
     console.error('Error:', err);
     res.status(500).send('Internal Server Error');
   }
+});
+
+app.get('/api/uploadedData/:uploadId', async (req, res) => {
+  try {
+    const uploadedData = await fetchUploadedData(req.params.uploadId);
+    res.json(uploadedData);
+  } catch (err) {
+    console.error('Error:', err);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+app.post('/upload', (req, res) => {
+  upload(req, res, async function(err) {
+    if (err instanceof multer.MulterError) {
+      console.error('Multer error:', err);
+      return res.status(500).json({ error: err.message });
+    } else if (err) {
+      console.error('Unknown error:', err);
+      return res.status(500).json({ error: 'An unknown error occurred' });
+    }
+
+    try {
+      const { uploadId, data } = await uploadFile(req, res);
+      res.json({ uploadId, data });
+    } catch (err) {
+      console.error('Error:', err);
+      res.status(500).send('Internal Server Error');
+    }
+  });
+});
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../build', 'index.html'));
 });
 
 //Start the server and listen on the specified port
