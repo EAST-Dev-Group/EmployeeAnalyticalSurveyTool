@@ -1,0 +1,33 @@
+July 10, 2024
+--------------
+javascript and css for html home page
+script.js - Serving functionality for the html and home page of the website
+   - fetchData() function - retrieves existing data from the server
+   - displayData() function - data is stored in an array called currentData
+      - data is restored into html form and output in the form of a table to the website home page
+   - escapeHtml() function - used to reformat unsafe data insertion text/symbols
+   - sortData() function - used for recorded date dropdown menu. It sorts the data by 'oldest to newest' and 'newest to oldest'
+   - toggleComment() function - used to expand comments section for larger bodies of text. Represented with a blue arrow.
+   - uploadFile() function - sends new data (the excel file) to the server. called in the html code as an 'onclick' function when the user clicks the upload button
+   - initResize(), resize(), stopResize() functions - all used for the resizeable window that the data table sits in
+   - fileSelection() - Displays excel file name after a file is selected with the 'choose file' button
+Merged Yousef's search bar and search algorithm code to fit in with the current project. 
+
+styles.css - styling for the html and main home page of website
+---------------
+Added database.js, home.js, output.html, upload.js
+upload.js - Added new query's and table structure 
+- Changes made:
+   - Session uuid: A 'uuid' or what we use as an 'upload ID', is a unique randomly generated string of letters and numbers. It's purpose is to keep track of what the user added to the table, so that we can query only what they added and not the entire table. For this reason, the uuid or the 'UploadID' gets its own attribute in the SurveyResponses table. In a hypothetical scenario, it is possible that if two users upload the same data, the first user's upload id will be overwritten with the new users upload id. Therefore, this attribute should not be used to query data after the initial upload and fetch, because it can change and the users data will be irretrievable. However, this is why we chose to insert the data into an array (currentData in script.js) for the html and javascript to access it at any time after the upload. So, we are able to alter the visual display of data instead of a full query to retrieve the data from the database again. This is a quicker and less resource-intensive solution as compared to querying back to the database for old data. This uuid will change every upload; meaning, if a user wants to upload multiple excel files to the database, they will get a different uuid every upload. In other words, every upload has a different upload ID. 
+   - Create table query: Accounted for new Upload ID attribute and added UploadedAt and LastUpdatedAt attributes to the SurveyResponses table. 
+      - UploadedAt: Shows when this data was initially uploaded to the table. This value will never change after the first insertion of that tuple's response id. 
+      - LastUpdatedAt: Shows the last time this data was uploaded to the table. This value will change with every single upload of that tuple's response id. 
+   - Insert/upload query (upsertDataQuery): This query inserts and uploads data from the users excel file into the database table. It also checks: If the data already exists (i.e. both the response id's from the table and the users excel document match up), then it will overwrite the old data in the tuple with the new data (except for responseID and UploadedAt). 
+
+database.js - Separated old fetchData function into two new functions: fetchAllData() and fetchUploadedData(). 
+   - fetchAllData() function: fetches all of the data from the table (i.e. every excel file's contents uploaded to the database)
+   - fetchUploadedData() function: only fetches the excel file the user uploaded to the database. This is achieved by quering the uploadID attribute immediately after the data upload. 
+
+home.js - Added supporting routes for using fetchUploadedData() function. 
+
+output.html - Added support for new javascript functions in script.js and separated the html, javascript, and css into three seperate files.
