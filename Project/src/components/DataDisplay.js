@@ -1,8 +1,10 @@
+//My code
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link as RouterLink } from 'react-router-dom';
 import { DataGrid } from '@mui/x-data-grid';
 import Link from '@mui/material/Link';
+import DateRange from './daterange.js';
 
 function ExpandableCell({ value }) {
   const [expanded, setExpanded] = useState(false);
@@ -25,8 +27,10 @@ function ExpandableCell({ value }) {
 
 function DataDisplay({ view, data: initialData }) {
   const [displayData, setDisplayData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
   const [columns, setColumns] = useState([]);
   const [pageSize, setPageSize] = useState(5);
+  const [dateRange, setDateRange] = useState([null, null]);
 
   useEffect(() => {
     if (view === 'single' && initialData) {
@@ -38,11 +42,23 @@ function DataDisplay({ view, data: initialData }) {
     }
   }, [view, initialData]);
 
+  useEffect(() => {
+    if (dateRange[0] && dateRange[1]) {
+      const [start, end] = dateRange;
+      setFilteredData(displayData.filter(row => {
+        const date = new Date(row['Recorded Date']);
+        return date >= start.toDate() && date <= end.toDate();
+      }));
+    } else {
+      setFilteredData(displayData);
+    }
+  }, [dateRange, displayData]);
+
   const processData = (data) => {
     if (data && data.length > 0) {
       const cols = [
         ...Object.keys(data[0])
-          .filter(key => !['UploadedAt', 'LastUpdatedAt', 'UploadID', 'id'].includes(key))  // Add 'id' to filtered keys
+          .filter(key => !['UploadedAt', 'LastUpdatedAt', 'UploadID', 'id'].includes(key))  
           .map(key => ({
             field: key,
             headerName: key === 'id' ? 'ID' : key,
@@ -54,7 +70,6 @@ function DataDisplay({ view, data: initialData }) {
           }))
       ];
       
-      // Add ID column at the beginning
       cols.unshift({ field: 'id', headerName: 'ID', width: 70 });
       
       setColumns(cols);
@@ -66,6 +81,7 @@ function DataDisplay({ view, data: initialData }) {
       }));
 
       setDisplayData(rowsWithId);
+      setFilteredData(rowsWithId);
     }
   };
 
@@ -97,6 +113,7 @@ function DataDisplay({ view, data: initialData }) {
 
   return (
     <div className="data-container">
+      <DateRange dateRange={dateRange} setDateRange={setDateRange} />
       <div style={{ height: 400, width: '100%', marginBottom: '20px' }}>
         <DataGrid
           rows={displayData}
