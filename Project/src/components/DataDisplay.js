@@ -1,4 +1,3 @@
-//My code
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link as RouterLink } from 'react-router-dom';
@@ -118,7 +117,7 @@ function DataDisplay({ view, data: initialData }) {
       </div>
       <div style={{ height: 400, width: '100%', marginBottom: '20px' }}>
         <DataGrid
-          rows={displayData}
+          rows={filteredData}
           columns={columns}
           pageSize={pageSize}
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
