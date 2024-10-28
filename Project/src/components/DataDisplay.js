@@ -113,7 +113,9 @@ function DataDisplay({ view, data: initialData }) {
 
   return (
     <div className="data-container">
-      <DateRange dateRange={dateRange} setDateRange={setDateRange} />
+      <div style={{ marginBottom: '20px' }}>
+        <DateRange dateRange={dateRange} setDateRange={setDateRange} />
+      </div>
       <div style={{ height: 400, width: '100%', marginBottom: '20px' }}>
         <DataGrid
           rows={displayData}
