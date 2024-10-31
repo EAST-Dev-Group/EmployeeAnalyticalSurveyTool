@@ -4,9 +4,30 @@
 //Functions & Vars Here
 //DataInput is the Database Datagrid.
 //QueryArgs is a string for filtering the Datagrid.
-function filterDataGrid(dataInput, queryArgs){
-    let filteredDataGrid = [];
+function filterDataGrid(data){
+    const [chartData, setChartData] = useState([]);
 
+    useEffect(() => {
+    if (data && data.length > 0) {
+      // Process data for Charts
+      // Group by Satisfaction Rating
+      const satisfactionCounts = data.reduce((acc, row) => {
+        const rating = row['Satisfaction Rating'];
+        acc[rating] = (acc[rating] || 0) + 1;
+        return acc;
+      }, {});
+
+      // Convert to array format for chart
+      const processedData = Object.entries(satisfactionCounts)
+        .map(([rating, count]) => ({
+          rating: Number(rating),
+          count: count
+        }))
+        .sort((a, b) => a.rating - b.rating);  // Sort by rating
+
+      setChartData(processedData);
+    }
+    }, [data]);
 }
 
 //GraphTypes: 0 = BarGraph, 1 = LineGraph, 2 = TestCase, Any other val is null.
