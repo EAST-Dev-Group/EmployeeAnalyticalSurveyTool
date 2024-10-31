@@ -29,4 +29,4 @@ const BarGraph = () => {
   );
 };
 
-export default BarChart;
+export default BarGraph;

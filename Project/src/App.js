@@ -28,6 +28,7 @@ function App() {
               <h1>All Survey Responses</h1>
               <DataDisplay view="all" />
               <LineGraph />
+              <BarGraph />
             </>
           } />
         </Routes>
