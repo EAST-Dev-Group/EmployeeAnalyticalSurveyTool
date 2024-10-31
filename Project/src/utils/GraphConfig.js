@@ -1,7 +1,15 @@
 //Imports Here
 
-//Functions Here
+//Functions & Vars Here
+//DataInput is the Database Datagrid.
+//QueryArgs is a string for filtering the Datagrid.
+var filteredDataGrid = [];
+function filterDataGrid(dataInput, queryArgs){
+
+}
+
 //GraphTypes: 0 = BarGraph, 1 = LineGraph, 2 = PieGraph, 3 = TestCase, Any other val is null.
+//Builds xAxis for a graph, will need configged for yAxis implementations.
 function buildAxis(graphType){
     let scaleStr = "";
     let dataArr = [];
@@ -28,6 +36,8 @@ function buildAxis(graphType){
     }
 }
 
+//GraphTypes: 0 = BarGraph, 1 = LineGraph, 2 = PieGraph, 3 = TestCase, Any other val is null.
+//Builds Series for a graph, will need configged for other implementations.
 function buildSeries(graphType){
     let idCount = 0;
     let valueArr = [];
