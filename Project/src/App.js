@@ -4,6 +4,7 @@ import DataDisplay from './components/DataDisplay';
 import LineGraph from './components/LineGraph';
 import BarGraph from './components/BarGraph';
 import CustomUploader from './components/CustomUploader';
+import BarGraphEx from './components/BarGraphEx';
 
 function App() {
   const [uploadedData, setUploadedData] = useState(null);
@@ -23,6 +24,7 @@ function App() {
               <DataDisplay view="single" data={uploadedData} />
               <LineGraph data={uploadedData} />
               <BarGraph data={uploadedData} />
+              <BarGraphEx data={uploadedData} />
             </>
           } />
           <Route path="/all-data" element={
@@ -31,6 +33,7 @@ function App() {
               <DataDisplay view="all" />
               <LineGraph />
               <BarGraph />
+              <BarGraphEx />
             </>
           } />
         </Routes>

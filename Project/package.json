@@ -21,6 +21,7 @@
     "mysql": "^2.18.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-responsive-container": "^0.0.0",
     "react-router-dom": "^6.27.0",
     "react-scripts": "5.0.1",
     "sanitize-html": "^2.13.1",
