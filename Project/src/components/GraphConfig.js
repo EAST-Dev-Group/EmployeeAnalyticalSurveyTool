@@ -1,6 +1,10 @@
 //Imports Here
 
 //Functions Here
-function buildXaxisData(){
+function buildAxis(){
+    
+}
+
+function buildSeries(){
     
 }
