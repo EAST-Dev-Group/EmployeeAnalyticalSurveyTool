@@ -15,7 +15,7 @@ const BarGraph = () => {
     <div style={{ width: '100%', height: 300, marginTop: '20px' }}>
       <BarChart
         xAxis={[{ 
-          data: data.map(item => new String(item.rating)),
+          data: data.map(item => item.rating),
           scaleType: 'time',
         }]}
         series={[

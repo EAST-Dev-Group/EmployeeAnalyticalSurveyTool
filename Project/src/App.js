@@ -22,6 +22,7 @@ function App() {
               <CustomUploader onUpload={handleUpload} />
               <DataDisplay view="single" data={uploadedData} />
               <LineGraph data={uploadedData} />
+              <BarGraph data={uploadedData} />
             </>
           } />
           <Route path="/all-data" element={
