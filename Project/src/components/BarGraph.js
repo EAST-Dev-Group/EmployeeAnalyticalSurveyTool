@@ -16,7 +16,7 @@ const BarGraph = () => {
       <BarChart
         xAxis={[{ 
           data: data.map(item => item.rating),
-          scaleType: 'time',
+          scaleType: 'band',
         }]}
         series={[
           {
