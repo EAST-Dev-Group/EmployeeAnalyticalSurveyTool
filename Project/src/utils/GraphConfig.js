@@ -8,7 +8,7 @@ import Link from '@mui/material/Link';
 //import DateRange from './components/daterange.js';
 
 //Functions & Vars Here
-export function filterDataGrid(data){
+export function FilterDataGrid(data){
     const [inputData, setInputData] = useState([]);
     //This is just an example. For BarCharts.
     useEffect(() => {

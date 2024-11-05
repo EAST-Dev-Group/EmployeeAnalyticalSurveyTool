@@ -1,10 +1,10 @@
 // src/components/BarGraph.js
 import React from 'react';
 import { BarChart } from '@mui/x-charts/BarChart';
-import { filterDataGrid } from '../utils/GraphConfig';
+import { FilterDataGrid } from '../utils/GraphConfig';
 
 const BarGraph = ({data}) => {
-  const inputData = filterDataGrid(data);
+  const inputData = FilterDataGrid(data);
 
   return (
     <div style={{ width: '100%', height: 300, marginTop: '20px' }}>
