@@ -1,13 +1,13 @@
 //Used to build Graphs Axis & Series, then return those arr vals.
 //Imports Here
 import React, { useState, useEffect } from 'react';
-
+import { DataMapFilter } from './GraphDataMapConfig';
 
 //Functions & Vars Here
-export function FilterDataGrid({data}){
-    const [inputData, setInputData] = useState([]);
-    //This is just an example. For BarCharts.
-    useEffect(() => {
+export function FilterDataGrid({view, data}){
+    const inputData = DataMapFilter(view, data);
+    
+    /*useEffect(() => {
         if (data && data.length > 0) {
           // Process data for Bar Chart
           // Group by Satisfaction Rating
@@ -28,9 +28,9 @@ export function FilterDataGrid({data}){
           setInputData(processedData);
         }
       }, [data]);
-
-      console.log(inputData);
-      return inputData;
+    */
+      //console.log(inputData);
+      //return inputData;
 }
 
 //GraphTypes: 0 = BarGraph, 1 = LineGraph, 2 = TestCase, Any other val is null.
