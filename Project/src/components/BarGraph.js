@@ -3,7 +3,7 @@ import React from 'react';
 import { BarChart } from '@mui/x-charts/BarChart';
 import { FilterDataGrid } from '../utils/GraphConfig';
 
-const BarGraph = (data) => {
+const BarGraph = (data2) => {
   const data = [
     { rating: '1-Star', value: 10 },
     { rating: '2-Star', value: 15 },
