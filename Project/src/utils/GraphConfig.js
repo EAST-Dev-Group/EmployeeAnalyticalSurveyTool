@@ -1,14 +1,10 @@
 //Used to build Graphs Axis & Series, then return those arr vals.
 //Imports Here
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Link as RouterLink } from 'react-router-dom';
-import { DataGrid } from '@mui/x-data-grid';
-import Link from '@mui/material/Link';
-//import DateRange from './components/daterange.js';
+
 
 //Functions & Vars Here
-export function FilterDataGrid(data){
+export function FilterDataGrid({data}){
     const [inputData, setInputData] = useState([]);
     //This is just an example. For BarCharts.
     useEffect(() => {
@@ -33,6 +29,7 @@ export function FilterDataGrid(data){
         }
       }, [data]);
 
+      console.log(inputData);
       return inputData;
 }
 

@@ -1,9 +1,9 @@
 // src/components/BarGraph.js
 import React from 'react';
 import { BarChart } from '@mui/x-charts/BarChart';
-import { filterDataGrid } from '../utils/GraphConfig';
+//import { filterDataGrid } from '../utils/GraphConfig';
 
-const BarGraph = () => {
+const BarGraph = (data) => {
   const data = [
     { rating: '1-Star', value: 10 },
     { rating: '2-Star', value: 15 },
