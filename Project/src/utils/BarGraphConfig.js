@@ -1,4 +1,4 @@
-//Used to build Graphs Axis & Series, then return those arr vals.
+//Filters Datamaps for BarGraphs
 //Imports Here
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
