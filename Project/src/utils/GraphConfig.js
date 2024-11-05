@@ -1,20 +1,25 @@
 //Used to build Graphs Axis & Series, then return those arr vals.
 //Imports Here
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 //Functions & Vars Here
-export function FilterDataGrid({data}){
+export function FilterDataGrid(){
     const [chartData, setChartData] = useState([]);
 
-    const outputData = (inputData) =>{
-        console.log(inputData);
-    };
-  
-    //outputData(data);
-
-    useEffect(() => {
+    //Fetches All Data from Server
+    const fetchAllData = async () => {
+        try {
+          const response = await axios.get('/api/allData');
+          processData(response.data);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      }
+    
+    // Process data for whole Bar Chart
+    const processData = (data) => {
       if (data && data.length > 0) {
-        // Process data for Bar Chart
         // Group by Satisfaction Rating
         const satisfactionCounts = data.reduce((acc, row) => {
           const rating = row['Satisfaction Rating'];
@@ -33,9 +38,13 @@ export function FilterDataGrid({data}){
 
           setChartData(processedData);
       }
-    }, [data]);
+    };
 
-    outputData(chartData);
+    if(chartData && chartData.length <= 0){
+        fetchAllData();
+    }
+    //outputData(chartData);
+    return chartData;
 }
 
 //GraphTypes: 0 = BarGraph, 1 = LineGraph, 2 = TestCase, Any other val is null.
