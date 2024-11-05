@@ -1,36 +1,41 @@
 //Used to build Graphs Axis & Series, then return those arr vals.
 //Imports Here
 import React, { useState, useEffect } from 'react';
-import { DataMapFilter } from './GraphDataMapConfig';
 
 //Functions & Vars Here
-export function FilterDataGrid({view, data}){
-    const inputData = DataMapFilter(view, data);
-    
-    /*useEffect(() => {
-        if (data && data.length > 0) {
-          // Process data for Bar Chart
-          // Group by Satisfaction Rating
-          const satisfactionCounts = data.reduce((acc, row) => {
-            const rating = row['Satisfaction Rating'];
-            acc[rating] = (acc[rating] || 0) + 1;
-            return acc;
-          }, {});
-    
-          // Convert to array format for chart
-          const processedData = Object.entries(satisfactionCounts)
-            .map(([rating, count]) => ({
-              rating: Number(rating),
-              count: count
-            }))
-            .sort((a, b) => a.rating - b.rating);  // Sort by rating
-    
-          setInputData(processedData);
-        }
-      }, [data]);
-    */
-      //console.log(inputData);
-      //return inputData;
+export function FilterDataGrid(data){
+    const [chartData, setChartData] = useState([]);
+
+    const outputData = (inputData) =>{
+      console.log(inputData);
+    };
+  
+    useEffect(() => {
+      if (data && data.length > 0) {
+        // Process data for Bar Chart
+        // Group by Satisfaction Rating
+        const satisfactionCounts = data.reduce((acc, row) => {
+          const rating = row['Satisfaction Rating'];
+          acc[rating] = (acc[rating] || 0) + 1;
+  
+          console.log(acc);
+          return acc;
+        }, {});
+  
+        // Convert to array format for chart
+        const processedData = Object.entries(satisfactionCounts)
+          .map(([rating, count]) => ({
+            rating: Number(rating),
+            count: count
+          }))
+          .sort((a, b) => a.rating - b.rating);  // Sort by rating
+  
+          console.log(processedData);
+          setChartData(processedData);
+      }
+    }, [data]);
+
+    outputData(chartData);
 }
 
 //GraphTypes: 0 = BarGraph, 1 = LineGraph, 2 = TestCase, Any other val is null.
