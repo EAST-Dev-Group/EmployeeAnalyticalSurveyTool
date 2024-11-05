@@ -2,10 +2,32 @@
 //Imports Here
 
 //Functions & Vars Here
-//DataInput is the Database Datagrid.
-//QueryArgs is a string for filtering the Datagrid.
-function filterDataGrid(data){
+export function filterDataGrid(data){
+    const [inputData, setInputData] = useState([]);
+    //This is just an example. For BarCharts.
+    useEffect(() => {
+        if (data && data.length > 0) {
+          // Process data for Bar Chart
+          // Group by Satisfaction Rating
+          const satisfactionCounts = data.reduce((acc, row) => {
+            const rating = row['Satisfaction Rating'];
+            acc[rating] = (acc[rating] || 0) + 1;
+            return acc;
+          }, {});
     
+          // Convert to array format for chart
+          const processedData = Object.entries(satisfactionCounts)
+            .map(([rating, count]) => ({
+              rating: Number(rating),
+              count: count
+            }))
+            .sort((a, b) => a.rating - b.rating);  // Sort by rating
+    
+          setInputData(processedData);
+        }
+      }, [data]);
+
+      return {inputData};
 }
 
 //GraphTypes: 0 = BarGraph, 1 = LineGraph, 2 = TestCase, Any other val is null.
