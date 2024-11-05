@@ -11,7 +11,7 @@ function filterDataGrid(data){
 //GraphTypes: 0 = BarGraph, 1 = LineGraph, 2 = TestCase, Any other val is null.
 //Builds xAxis for a graph, will need configged for yAxis implementations.
 //
-function buildAxis(graphType, userArgs){
+export function buildAxis(graphType, userArgs){
     let inputAxisGrid = [];
     //let scaleStr = "";
     //let dataArr = [];
@@ -36,7 +36,7 @@ function buildAxis(graphType, userArgs){
 
 //GraphTypes: 0 = BarGraph, 1 = LineGraph, 2 = PieGraph, 3 = TestCase, Any other val is null.
 //Builds Series for a graph, will need configged for other implementations.
-function buildSeries(graphType, userArgs){
+export function buildSeries(graphType, userArgs){
     let inputSeriesGrid = [];
     let idCount = 0;
     //let valueArr = [];
