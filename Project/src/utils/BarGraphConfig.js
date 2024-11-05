@@ -31,7 +31,7 @@ export function DefaultSatisfactionGraph(){
         // Convert to array format for chart
         const processedData = Object.entries(satisfactionCounts)
           .map(([rating, count]) => ({
-            rating: Number(rating),
+            rating: Number(rating) + " Star",
             count: count
           }))
           .sort((a, b) => a.rating - b.rating);  // Sort by rating
