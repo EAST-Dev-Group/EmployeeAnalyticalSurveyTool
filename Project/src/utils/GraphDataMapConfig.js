@@ -1,36 +1,37 @@
 //This will be used to filter out series and xaxes for graph datamaps.
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link as RouterLink } from 'react-router-dom';
-import { DataGrid } from '@mui/x-data-grid';
 import Link from '@mui/material/Link';
 import DateRange from '../components/daterange';
 
-function ExpandableCell({ value }) {
-  const [expanded, setExpanded] = useState(false);
+/*
+const [chartData, setChartData] = useState([]);
 
-  return (
-    <div>
-      {expanded ? value : value.slice(0, 200)}&nbsp;
-      {value && value.length > 200 && (
-        <Link
-          component="button"
-          sx={{ fontSize: 'inherit', letterSpacing: 'inherit' }}
-          onClick={() => setExpanded(!expanded)}
-        >
-          {expanded ? 'view less' : 'view more'}
-        </Link>
-      )}
-    </div>
-  );
-}
+  useEffect(() => {
+    if (data && data.length > 0) {
+      // Process data for Bar Chart
+      // Group by Satisfaction Rating
+      const satisfactionCounts = data.reduce((acc, row) => {
+        const rating = row['Satisfaction Rating'];
+        acc[rating] = (acc[rating] || 0) + 1;
+        return acc;
+      }, {});
+
+      // Convert to array format for chart
+      const processedData = Object.entries(satisfactionCounts)
+        .map(([rating, count]) => ({
+          rating: Number(rating),
+          count: count
+        }))
+        .sort((a, b) => a.rating - b.rating);  // Sort by rating
+
+      setChartData(processedData);
+    }
+  }, [data]);
+*/
 
 export function DataMapFilter ({ view, data: initialData }) {
-  const [displayData, setDisplayData] = useState([]);
-  const [filteredData, setFilteredData] = useState([]);
-  const [columns, setColumns] = useState([]);
-  const [pageSize, setPageSize] = useState(5);
-  const [dateRange, setDateRange] = useState([null, null]);
+  const [chartData, setChartData] = useState([]);
 
   useEffect(() => {
     if (view === 'single' && initialData) {
@@ -42,6 +43,7 @@ export function DataMapFilter ({ view, data: initialData }) {
     }
   }, [view, initialData]);
 
+  /*
   useEffect(() => {
     if (dateRange[0] && dateRange[1]) {
       const [start, end] = dateRange;
@@ -54,44 +56,19 @@ export function DataMapFilter ({ view, data: initialData }) {
     }
   }, [dateRange, displayData]);
 
-  const processData = (data) => {
-    if (data && data.length > 0) {
-      const cols = [
-        ...Object.keys(data[0])
-          .filter(key => !['UploadedAt', 'LastUpdatedAt', 'UploadID', 'id'].includes(key))  
-          .map(key => ({
-            field: key,
-            headerName: key === 'id' ? 'ID' : key,
-            width: key === 'Comments' ? 400 : 150,
-            editable: true,
-            renderCell: key === 'Comments' 
-              ? (params) => <ExpandableCell {...params} />
-              : undefined
-          }))
-      ];
-      
-      cols.unshift({ field: 'id', headerName: 'ID', width: 70 });
-      
-      setColumns(cols);
-
-      const rowsWithId = data.map((row, index) => ({
-        id: row.id || index + 1,
-        ...row,
-        'Recorded Date': formatDate(row['Recorded Date'])
-      }));
-
-      setDisplayData(rowsWithId);
-      setFilteredData(rowsWithId);
-    }
-  };
-
+  //const rowsWithId = data.map((row, index) => ({
+  //  id: row.id || index + 1,
+  //  ...row,
+  //  'Recorded Date': formatDate(row['Recorded Date'])
+  //}));
   const formatDate = (dateString) => {
     if (!dateString) return '';
     const date = new Date(dateString);
     if (isNaN(date.getTime())) return dateString;
     return date.toISOString().split('T')[0];
-  };
+  };*/
 
+  
   const fetchData = async () => {
     try {
       const response = await axios.get('/api/data');
@@ -111,5 +88,5 @@ export function DataMapFilter ({ view, data: initialData }) {
     }
   };
 
-  console.log(filteredData);
+  //console.log(filteredData);
 }
