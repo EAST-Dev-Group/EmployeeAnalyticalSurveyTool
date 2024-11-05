@@ -3,13 +3,15 @@
 import React, { useState, useEffect } from 'react';
 
 //Functions & Vars Here
-export function FilterDataGrid(data){
+export function FilterDataGrid({data}){
     const [chartData, setChartData] = useState([]);
 
     const outputData = (inputData) =>{
-      console.log(inputData);
+        console.log(inputData);
     };
   
+    //outputData(data);
+
     useEffect(() => {
       if (data && data.length > 0) {
         // Process data for Bar Chart
@@ -18,7 +20,6 @@ export function FilterDataGrid(data){
           const rating = row['Satisfaction Rating'];
           acc[rating] = (acc[rating] || 0) + 1;
   
-          console.log(acc);
           return acc;
         }, {});
   
@@ -29,8 +30,7 @@ export function FilterDataGrid(data){
             count: count
           }))
           .sort((a, b) => a.rating - b.rating);  // Sort by rating
-  
-          console.log(processedData);
+
           setChartData(processedData);
       }
     }, [data]);
