@@ -1,5 +1,11 @@
 //Used to build Graphs Axis & Series, then return those arr vals.
 //Imports Here
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Link as RouterLink } from 'react-router-dom';
+import { DataGrid } from '@mui/x-data-grid';
+import Link from '@mui/material/Link';
+import DateRange from './daterange.js';
 
 //Functions & Vars Here
 export function filterDataGrid(data){
@@ -27,7 +33,7 @@ export function filterDataGrid(data){
         }
       }, [data]);
 
-      return {inputData};
+      return inputData;
 }
 
 //GraphTypes: 0 = BarGraph, 1 = LineGraph, 2 = TestCase, Any other val is null.
