@@ -27,7 +27,3 @@ const PieGraph = () => {
 };
 
 export default PieGraph;
-
-//data: data.map(item => item.count),
-//            label: data.map(item => item.csit)
-//            area: true,
