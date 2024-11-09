@@ -21,7 +21,7 @@ const LineGraph = () => {
         series={[
           {
             data: data.map(item => item.value),
-            area: true,
+            area: false,
           },
         ]}
       />

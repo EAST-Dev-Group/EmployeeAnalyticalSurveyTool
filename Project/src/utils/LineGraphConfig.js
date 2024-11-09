@@ -8,15 +8,15 @@ import axios from 'axios';
 export function DefaultCSITGraph(){
     const [chartData, setChartData] = useState([]);
 
-    //Fetches All Data from Server
-    const fetchAllData = async () => {
-        try {
-          const response = await axios.get('/api/allData');
-          processData(response.data);
-        } catch (error) {
-          console.error('Error fetching data:', error);
-        }
+    //Fetches excel data from Server
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('/api/data');
+        processData(response.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
       }
+    }
     
     // Process Data for average weekly rating for each CSIT Org for Line Graph.
     const processData = (data) => {
@@ -27,8 +27,10 @@ export function DefaultCSITGraph(){
 
     //Used to break infinite loops.
     if(chartData && chartData.length <= 0){
-        fetchAllData();
+      fetchData();
     }
     //outputData(chartData);
     return chartData;
 }
+//For future iterations or additions all that would need done is adding another function following the above function as a template.
+//fetchData currently fetches data from the currently uploaded datasheet, but can be replaced with fetchAllData as seen in DataDisplay.js, line 104-111
