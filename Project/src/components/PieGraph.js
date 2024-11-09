@@ -1,4 +1,4 @@
-// src/components/BarGraph.js
+// src/components/PieGraph.js
 import * as React from 'react';
 import { PieChart } from '@mui/x-charts/PieChart';
 import { DefaultPieGraph } from '../utils/PieGraphConfig';
