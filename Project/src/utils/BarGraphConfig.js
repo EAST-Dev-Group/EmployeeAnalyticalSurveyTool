@@ -44,7 +44,6 @@ export function DefaultSatisfactionGraph(){
     if(chartData && chartData.length <= 0){
       fetchData();
     }
-    //outputData(chartData);
     return chartData;
 }
 //For future iterations or additions all that would need done is adding another function following the above function as a template.
