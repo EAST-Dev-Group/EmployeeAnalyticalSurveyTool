@@ -18,6 +18,7 @@ export function DefaultPieGraph(){
       }
     }
     
+    //This shows how many surveys comes from each CSIT org.
     const processData = (data) => {
       if (data && data.length > 0) {
         // Group by CSIT Rating
