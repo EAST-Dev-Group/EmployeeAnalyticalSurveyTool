@@ -25,6 +25,7 @@ function App() {
               <LineGraph data={uploadedData} />
               <BarGraph data={uploadedData} />
               <PieGraph data={uploadedData} />
+
             </>
           } />
           <Route path="/all-data" element={
