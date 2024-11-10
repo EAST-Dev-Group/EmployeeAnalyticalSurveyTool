@@ -6,7 +6,7 @@ import { DefaultCSITGraph } from '../utils/LineGraphConfig';
 const LineGraph = () => {
   const data2 = DefaultCSITGraph();
 
-  console.log(data2);
+  console.log(data2)
 
   const data = [
     { date: '2023-01-01', value: 10 },

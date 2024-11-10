@@ -7,7 +7,7 @@ import axios from 'axios';
 //Will work here later, will display the change in average ratings for each CSIT org over time. Will need a lot of work.
 export function DefaultCSITGraph(){
     const [chartData, setChartData] = useState([]);
-
+    let dataArr = [];
     //Fetches excel data from Server
     const fetchData = async () => {
       try {
@@ -23,10 +23,9 @@ export function DefaultCSITGraph(){
       if (data && data.length > 0) {
         // Group and fetch CSIT Orgs, ratings, and dates
         let rawDataArr = Array.from(data);
-        let dataArr = [];
 
         for(let i = 0; i < rawDataArr.length; ++i){
-          dataArr.push({csit: rawDataArr[i]["CSIT Org"], rating: rawDataArr[i]["Satisfaction Rating"], date: rawDataArr[i]["Recorded Date"]});
+          dataArr.push({csit: rawDataArr[i]["CSIT Org"], date: rawDataArr[i]["Recorded Date"], rating: rawDataArr[i]["Satisfaction Rating"]});
         }
 
         dataArr.sort((a, b) => new Date(a.date) - new Date(b.date)); // Sort by date
@@ -40,7 +39,6 @@ export function DefaultCSITGraph(){
     if(chartData && chartData.length <= 0){
       fetchData();
     }
-    //console.log(chartData);
     return chartData;
 }
 //For future iterations or additions all that would need done is adding another function following the above function as a template.

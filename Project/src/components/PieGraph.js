@@ -7,7 +7,6 @@ import Box from '@mui/material/Box';
 
 const PieGraph = () => {
   const data = DefaultPieGraph();
-  console.log(data);
 
   return (
     <div style={{ width: '100%', height: 300, marginTop: '20px' }}>
