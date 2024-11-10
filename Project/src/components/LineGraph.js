@@ -1,8 +1,11 @@
 // src/components/LineGraph.js
 import React from 'react';
 import { LineChart } from '@mui/x-charts/LineChart';
+import { DefaultCSITGraph } from '../utils/LineGraphConfig';
 
 const LineGraph = () => {
+  const data2 = DefaultCSITGraph();
+
   const data = [
     { date: '2023-01-01', value: 10 },
     { date: '2023-02-01', value: 15 },

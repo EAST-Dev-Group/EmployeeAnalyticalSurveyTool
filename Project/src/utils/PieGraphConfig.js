@@ -29,7 +29,6 @@ export function DefaultPieGraph(){
           return acc;
         }, {});
         
-        console.log(csitCounts);
         // Convert to array format for chart
         const processedData = Object.entries(csitCounts)
           .map(([csit, count]) => ({
@@ -45,7 +44,7 @@ export function DefaultPieGraph(){
     if(chartData && chartData.length <= 0){
       fetchData();
     }
-    console.log(chartData);
+    //console.log(chartData);
     return chartData;
 }
 //For future iterations or additions all that would need done is adding another function following the above function as a template.
