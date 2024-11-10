@@ -20,6 +20,7 @@ export function DefaultCSITGraph(){
     
     // Process Data for average weekly rating for each CSIT Org for Line Graph.
     const processData = (data) => {
+      console.log(data);
       if (data && data.length > 0) {
         // Group and fetch CSIT Orgs
         const csitCounts = data.reduce((acc, row) => {
@@ -45,9 +46,6 @@ export function DefaultCSITGraph(){
           return acc;
         }, {});
 
-        const allData = csitCounts.join(satisfactionCounts).join(dates);
-        console.log(allData);
-
           // Convert to array format for chart
         const processedData = Object.entries(csitCounts, satisfactionCounts, dates)
         .map(([csit]) => ({
@@ -62,7 +60,7 @@ export function DefaultCSITGraph(){
     if(chartData && chartData.length <= 0){
       fetchData();
     }
-    console.log(chartData);
+    //console.log(chartData);
     return chartData;
 }
 //For future iterations or additions all that would need done is adding another function following the above function as a template.
