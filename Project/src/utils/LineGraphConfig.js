@@ -21,23 +21,40 @@ export function DefaultCSITGraph(){
     // Process Data for average weekly rating for each CSIT Org for Line Graph.
     const processData = (data) => {
       if (data && data.length > 0) {
-        // Group by Satisfaction Rating
-        const satisfactionCounts = data.reduce((acc, row) => {
-          const rating = row['Recorded Date'];
-          acc[rating] = (acc[rating] || 0) + 1;
+        // Group and fetch CSIT Orgs
+        const csitCounts = data.reduce((acc, row) => {
+          const csit = row['CSIT Org'];
+          acc[csit] = (acc[csit] || 0) + 1;
   
           return acc;
         }, {});
-  
-        //console.log(satisfactionCounts);
-        // Convert to array format for chart
-        const processedData = Object.entries(satisfactionCounts)
-          .map(([rating, count]) => ({
-            rating: Number(rating) + " Star",
-            count: count
-          }))
-          .sort((a, b) => a.rating - b.rating);  // Sort by rating
-          setChartData(processedData);
+
+        // Group and fetch ratings
+        const satisfactionCounts = data.reduce((acc, row) => {
+          const rating = row['Satisfaction Rating'];
+          acc[rating] = (acc[rating] || 0) + 1;
+
+          return acc;
+        }, {});
+        
+        // Group and fetch dates
+        const dates = data.reduce((acc, row) => {
+          const date = row['Recorded Date'];
+          acc[date] = (acc[date] || 0) + 1;
+
+          return acc;
+        }, {});
+
+        const allData = csitCounts.join(satisfactionCounts).join(dates);
+        console.log(allData);
+
+          // Convert to array format for chart
+        const processedData = Object.entries(csitCounts, satisfactionCounts, dates)
+        .map(([csit]) => ({
+          label: csit
+        }));
+
+        setChartData(processedData);
       }
     };
 
