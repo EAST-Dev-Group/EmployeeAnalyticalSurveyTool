@@ -22,35 +22,22 @@ export function DefaultCSITGraph(){
     const processData = (data) => {
       console.log(data);
       if (data && data.length > 0) {
-        // Group and fetch CSIT Orgs
-        const csitCounts = data.reduce((acc, row) => {
-          const csit = row['CSIT Org'];
-          acc[csit] = (acc[csit] || 0) + 1;
-  
-          return acc;
-        }, {});
+        // Group and fetch CSIT Orgs, ratings, and dates
+        let rawDataArr = Array.from(data);
+        let dataArr = [];
 
-        // Group and fetch ratings
-        const satisfactionCounts = data.reduce((acc, row) => {
-          const rating = row['Satisfaction Rating'];
-          acc[rating] = (acc[rating] || 0) + 1;
+        for(let i = 0; i < rawDataArr.length; ++i){
+          dataArr.push({csit: rawDataArr[i]["CSIT Org"], rating: rawDataArr[i]["Satisfaction Rating"], date: rawDataArr[i]["Recorded Date"]});
+        }
 
-          return acc;
-        }, {});
-        
-        // Group and fetch dates
-        const dates = data.reduce((acc, row) => {
-          const date = row['Recorded Date'];
-          acc[date] = (acc[date] || 0) + 1;
+        //console.log(dataArr)
 
-          return acc;
-        }, {});
-
-          // Convert to array format for chart
-        const processedData = Object.entries(csitCounts, satisfactionCounts, dates)
-        .map(([csit]) => ({
-          label: csit
-        }));
+        const processedData = Object.entries(data)
+          .map(([rating, count]) => ({
+            rating: Number(rating) + " Star",
+            count: count
+          }))
+          .sort((a, b) => a.rating - b.rating);  // Sort by rating
 
         setChartData(processedData);
       }
