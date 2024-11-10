@@ -27,17 +27,11 @@ export function DefaultCSITGraph(){
         let dataArr = [];
 
         for(let i = 0; i < rawDataArr.length; ++i){
-          dataArr.push({csit: rawDataArr[i]["CSIT Org"], rating: rawDataArr[i]["Satisfaction Rating"], date: rawDataArr[i]["Recorded Date"]});
+          dataArr.push({label: rawDataArr[i]["CSIT Org"], value: rawDataArr[i]["Satisfaction Rating"], date: rawDataArr[i]["Recorded Date"]});
         }
 
-        //console.log(dataArr)
-
-        const processedData = Object.entries(data)
-          .map(([rating, count]) => ({
-            rating: Number(rating) + " Star",
-            count: count
-          }))
-          .sort((a, b) => a.rating - b.rating);  // Sort by rating
+        dataArr.sort((a, b) => Date(a.date) - Date(b.date)); // Sort by date
+        const processedData = Object.assign(dataArr);
 
         setChartData(processedData);
       }
@@ -47,7 +41,7 @@ export function DefaultCSITGraph(){
     if(chartData && chartData.length <= 0){
       fetchData();
     }
-    //console.log(chartData);
+    console.log(chartData);
     return chartData;
 }
 //For future iterations or additions all that would need done is adding another function following the above function as a template.
