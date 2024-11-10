@@ -18,6 +18,8 @@ export function DefaultCSITGraph(){
       }
     }
     
+    // Still does not work as intended. Will work here more.
+    // Each CSIT org will need their own Label and Data array of ratings, but this is super close.
     // Process Data for average weekly rating for each CSIT Org for Line Graph.
     const processData = (data) => {
       if (data && data.length > 0) {
@@ -25,7 +27,7 @@ export function DefaultCSITGraph(){
         let rawDataArr = Array.from(data);
 
         for(let i = 0; i < rawDataArr.length; ++i){
-          dataArr.push({csit: rawDataArr[i]["CSIT Org"], date: rawDataArr[i]["Recorded Date"], rating: rawDataArr[i]["Satisfaction Rating"]});
+          dataArr.push({label: rawDataArr[i]["CSIT Org"], date: rawDataArr[i]["Recorded Date"], value: rawDataArr[i]["Satisfaction Rating"], area: false});
         }
 
         dataArr.sort((a, b) => new Date(a.date) - new Date(b.date)); // Sort by date
@@ -39,6 +41,7 @@ export function DefaultCSITGraph(){
     if(chartData && chartData.length <= 0){
       fetchData();
     }
+    console.log(chartData)
     return chartData;
 }
 //For future iterations or additions all that would need done is adding another function following the above function as a template.
