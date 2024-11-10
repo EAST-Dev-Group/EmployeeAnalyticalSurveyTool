@@ -20,7 +20,6 @@ export function DefaultCSITGraph(){
     
     // Process Data for average weekly rating for each CSIT Org for Line Graph.
     const processData = (data) => {
-      console.log(data);
       if (data && data.length > 0) {
         // Group and fetch CSIT Orgs, ratings, and dates
         let rawDataArr = Array.from(data);
@@ -41,7 +40,7 @@ export function DefaultCSITGraph(){
     if(chartData && chartData.length <= 0){
       fetchData();
     }
-    console.log(chartData);
+    //console.log(chartData);
     return chartData;
 }
 //For future iterations or additions all that would need done is adding another function following the above function as a template.
