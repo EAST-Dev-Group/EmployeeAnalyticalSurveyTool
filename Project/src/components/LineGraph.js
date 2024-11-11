@@ -44,6 +44,7 @@ const LineGraph = () => {
           min: 0,
           max: 5,
         }]}
+
         series={chartData.series.map((series, index) => ({
           data: series.data,
           label: series.name,
