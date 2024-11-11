@@ -1,48 +1,91 @@
-//Filters Datamaps for LineGraphs
-//Imports Here
+// LineGraphConfig.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-//Functions & Vars Here
-//Will work here later, will display the change in average ratings for each CSIT org over time. Will need a lot of work.
-export function DefaultCSITGraph(){
-    const [chartData, setChartData] = useState([]);
-    let dataArr = [];
-    //Fetches excel data from Server
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('/api/data');
-        processData(response.data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    }
-    
-    // Still does not work as intended. Will work here more.
-    // Each CSIT org will need their own Label and Data array of ratings, but this is super close.
-    // Process Data for average weekly rating for each CSIT Org for Line Graph.
-    const processData = (data) => {
-      if (data && data.length > 0) {
-        // Group and fetch CSIT Orgs, ratings, and dates
-        let rawDataArr = Array.from(data);
+export function DefaultSatisfactionGraph() {
+  const [chartData, setChartData] = useState({
+    organizations: [],
+    dates: [],
+    series: []
+  });
 
-        for(let i = 0; i < rawDataArr.length; ++i){
-          dataArr.push({label: rawDataArr[i]["CSIT Org"], date: rawDataArr[i]["Recorded Date"], value: rawDataArr[i]["Satisfaction Rating"], area: false});
+  const fetchData = async () => {
+    try {
+      const response = await axios.get('/api/data');
+      processData(response.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  const processData = (data) => {
+    if (data && data.length > 0) {
+      const validData = data.filter(item => 
+        item["Recorded Date"] && 
+        item["Satisfaction Rating"] && 
+        item["CSIT Org"]
+      );
+
+      // Group data by organization and date
+      const orgMap = {};
+      validData.forEach(item => {
+        const org = item["CSIT Org"];
+        const dateStr = item["Recorded Date"].split(' ')[0];
+        const [year, month, day] = dateStr.split('-').map(Number);
+        const date = new Date(year, month - 1, day);
+        const rating = parseFloat(item["Satisfaction Rating"]);
+
+        if (!orgMap[org]) {
+          orgMap[org] = {};
         }
 
-        dataArr.sort((a, b) => new Date(a.date) - new Date(b.date)); // Sort by date
-        const processedData = Object.assign(dataArr);
+        const formattedDateStr = date.toISOString().split('T')[0];
+        if (!orgMap[org][formattedDateStr]) {
+          orgMap[org][formattedDateStr] = {
+            sum: 0,
+            count: 0
+          };
+        }
+        
+        // Sum ratings and count for averaging
+        orgMap[org][formattedDateStr].sum += rating;
+        orgMap[org][formattedDateStr].count += 1;
+      });
 
-        setChartData(processedData);
-      }
-    };
+      // Get all unique dates
+      const allDates = [...new Set(validData.map(item => 
+        item["Recorded Date"].split(' ')[0]
+      ))].sort();
 
-    //Used to break infinite loops.
-    if(chartData && chartData.length <= 0){
-      fetchData();
+      // Create series data with averaged ratings rounded to 2 decimal places
+      const series = Object.keys(orgMap).map(org => {
+        const data = allDates.map(dateStr => {
+          const dateData = orgMap[org][dateStr];
+          if (!dateData) return null;
+          // Calculate average rating and round to 2 decimal places
+          return Number((dateData.sum / dateData.count).toFixed(2));
+        });
+
+        return {
+          name: org,
+          data: data
+        };
+      });
+
+      setChartData({
+        organizations: Object.keys(orgMap),
+        dates: allDates.map(dateStr => {
+          const [year, month, day] = dateStr.split('-').map(Number);
+          return new Date(year, month - 1, day);
+        }),
+        series: series
+      });
     }
-    console.log(chartData)
-    return chartData;
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  return chartData;
 }
-//For future iterations or additions all that would need done is adding another function following the above function as a template.
-//fetchData currently fetches data from the currently uploaded datasheet, but can be replaced with fetchAllData as seen in DataDisplay.js, line 104-111
