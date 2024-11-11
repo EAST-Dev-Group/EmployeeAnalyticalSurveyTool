@@ -69,12 +69,13 @@ function DataDisplay({ view, data: initialData }) {
           }))
       ];
       
-      cols.unshift({ field: 'id', headerName: 'ID', width: 70 });
+      //show id field
+      //cols.unshift({ field: 'id', headerName: 'ID', width: 70 });
       
       setColumns(cols);
 
       const rowsWithId = data.map((row, index) => ({
-        id: row.id || index + 1,
+        id: /*row.id ||*/ index + 1,
         ...row,
         'Recorded Date': formatDate(row['Recorded Date'])
       }));
