@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import DataDisplay from './components/DataDisplay';
 import LineGraph from './components/LineGraph';
+import BarGraph from './components/BarGraph';
+import PieGraph from './components/PieGraph';
 import CustomUploader from './components/CustomUploader';
 
 function App() {
@@ -21,6 +23,9 @@ function App() {
               <CustomUploader onUpload={handleUpload} />
               <DataDisplay view="single" data={uploadedData} />
               <LineGraph data={uploadedData} />
+              <BarGraph data={uploadedData} />
+              <PieGraph data={uploadedData} />
+
             </>
           } />
           <Route path="/all-data" element={
@@ -28,6 +33,8 @@ function App() {
               <h1>All Survey Responses</h1>
               <DataDisplay view="all" />
               <LineGraph />
+              <BarGraph />
+              <PieGraph />
             </>
           } />
         </Routes>
