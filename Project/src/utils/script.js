@@ -1,5 +1,15 @@
+//script.js is currently not being used in the react version of this project
+//it is simply here for reference
+
 function fetchData() {
     fetch('/api/data')
+        .then(response => response.json())
+        .then(data => displayData(data))
+        .catch(error => console.error('Error:', error));
+}
+
+function fetchAllData() {
+    fetch('/api/allData')
         .then(response => response.json())
         .then(data => displayData(data))
         .catch(error => console.error('Error:', error));
@@ -93,8 +103,9 @@ function uploadFile() {
     });
 }
 
-// Resizable window
-const resizable = document.querySelector('.resizable');
+// Resizable window for uploaded data
+const uploadedDataWindow = document.getElementById('uploadedDataWindow');
+const resizable = uploadedDataWindow.querySelector('.resizable');
 const dataWindow = resizable.querySelector('.data-window');
 const resizers = resizable.querySelectorAll('.resizer');
 
@@ -117,10 +128,11 @@ function initResize(e) {
 function resize(e) {
     if (!isResizing) return;
 
+    const containerRect = uploadedDataWindow.getBoundingClientRect();
     const rect = resizable.getBoundingClientRect();
 
     if (currentResizer.classList.contains('resizer-r') || currentResizer.classList.contains('resizer-rb')) {
-        const width = e.clientX - rect.left;
+        const width = Math.min(e.clientX - rect.left, containerRect.width);
         resizable.style.width = `${width}px`;
     }
     
@@ -128,6 +140,9 @@ function resize(e) {
         const height = e.clientY - rect.top;
         resizable.style.height = `${height}px`;
     }
+
+    dataWindow.style.width = `${resizable.offsetWidth}px`;
+    dataWindow.style.height = `${resizable.offsetHeight}px`;
 }
 
 function stopResize() {
@@ -135,7 +150,8 @@ function stopResize() {
     window.removeEventListener('mousemove', resize);
     window.removeEventListener('mouseup', stopResize);
 }
-fetchData();
+
+
 
 // File Selection Name Display
 function fileSelection() {
@@ -172,3 +188,67 @@ function searchTable() {
         }
     }
 }
+  
+//   function displayAllData(data) {
+//     const tableBody = document.getElementById('dataBody');
+//     tableBody.innerHTML = '';
+//     data.forEach((row, index) => {
+//       const tr = document.createElement('tr');
+//       tr.innerHTML = `
+//         <td class="line-number">${index + 1}</td>
+//         <td>${new Date(row['Recorded Date']).toLocaleString()}</td>
+//         <td>${row['Response Id']}</td>
+//         <td>${row['Satisfaction Rating']}</td>
+//         <td>${row['CSIT Org']}</td>
+//         <td>${row['Direct/Indirect']}</td>
+//         <td class="comment-cell">
+//           <pre class="comment-content">${escapeHtml(row['Comments'])}</pre>
+//           <span class="expand-button" onclick="toggleComment(this, event)">
+//             <i class="bi bi-plus-circle"></i>
+//           </span>
+//         </td>
+//       `;
+//       tableBody.appendChild(tr);
+//     });
+//   }
+  
+
+document.addEventListener('DOMContentLoaded', function() {
+    console.log("DOM fully loaded");
+    if (window.FileUpload) {
+        ReactDOM.render(
+            React.createElement(window.FileUpload),
+            document.getElementById('fileUploadContainer')
+        );
+    } else {
+        console.error("FileUpload component not found");
+    }
+
+    // Determine which page we're on
+    const isAllDataPage = window.location.pathname.includes('output2.html');
+
+    if (isAllDataPage) {
+        fetchAllData();
+        
+        // Add event listener for the "Back to Single File View" button
+        const viewSingleFileBtn = document.getElementById('viewSingleFileBtn');
+        if (viewSingleFileBtn) {
+            viewSingleFileBtn.addEventListener('click', function() {
+                window.location.href = 'output.html';
+            });
+        }
+    } else {
+        fetchData();
+        
+        // Add event listener for the "View All Data" button
+        const viewAllDataBtn = document.getElementById('viewAllDataBtn');
+        if (viewAllDataBtn) {
+            viewAllDataBtn.addEventListener('click', function() {
+                window.location.href = 'output2.html';
+            });
+        }
+    }
+
+    // Set up other event listeners
+    setupEventListeners();
+});
