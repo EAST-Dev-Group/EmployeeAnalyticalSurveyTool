@@ -5,6 +5,7 @@ import LineGraph from './components/LineGraph';
 import BarGraph from './components/BarGraph';
 import PieGraph from './components/PieGraph';
 import CustomUploader from './components/CustomUploader';
+import Header from './components/Header';
 
 function App() {
   const [uploadedData, setUploadedData] = useState(null);
@@ -19,7 +20,7 @@ function App() {
         <Routes>
           <Route path="/" element={
             <>
-              <h1>Survey Responses</h1>
+              <Header />
               <CustomUploader onUpload={handleUpload} />
               <DataDisplay view="single" data={uploadedData} />
               <LineGraph data={uploadedData} />
