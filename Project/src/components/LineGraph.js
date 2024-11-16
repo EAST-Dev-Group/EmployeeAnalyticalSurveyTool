@@ -77,6 +77,7 @@ const LineGraph = () => {
   };
 
   return (
+    //Grey box
     <div style={{ 
       width: '94%',
       backgroundColor: '#f5f5f5', 
@@ -168,7 +169,8 @@ const LineGraph = () => {
           </Select>
         </FormControl>
       </Stack>
-
+      
+      {/*White box*/}
       <div style={{ 
         width: '100%', 
         height: 450,
