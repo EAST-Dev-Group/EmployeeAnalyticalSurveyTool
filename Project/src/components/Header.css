@@ -1,0 +1,40 @@
+/* Header.css */
+.header-title {
+    font-family: "Neue Helvetica", Arial, Roboto, sans-serif;
+    color: #10384f;
+    font-size: 26px;
+    text-align: center;
+    margin: auto;
+    padding: 10px 0;
+    font-weight: 200;
+    position: relative;
+    width: 100%;
+    background-color: white;
+    transition: all 0.3s ease;
+    margin-bottom: 8px;
+  }
+  
+  .sticky {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .shrunk {
+    font-size: 20px;
+    padding: 10px 0;
+  }
+  
+  .header-placeholder {
+    height: 0;
+  }
+
+  .header-title img {
+    vertical-align: middle; /* Aligns the image vertically with the text */
+    position: relative;
+    bottom: 3px;
+    right: 8px;
+  }
