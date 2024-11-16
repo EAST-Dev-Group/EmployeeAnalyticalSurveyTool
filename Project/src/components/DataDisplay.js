@@ -116,7 +116,7 @@ function DataDisplay({ view, data: initialData }) {
       <div style={{ marginBottom: '20px' }}>
         <DateRange dateRange={dateRange} setDateRange={setDateRange} />
       </div>
-      <div style={{ height: 400, width: '100%', marginBottom: '20px' }}>
+      <div style={{ height: 400, width: '100%', marginBottom: '20px', boxShadow: '0 0 10px rgba(0,0,0,0.05)' }}>
         <DataGrid
           rows={filteredData}
           columns={columns}
@@ -137,7 +137,7 @@ function DataDisplay({ view, data: initialData }) {
         {view === 'single' ? (
           <RouterLink to="/all-data" className="view-all-btn">View All Data<i className="bi bi-arrow-right"></i></RouterLink>
         ) : (
-          <RouterLink to="/" className="view-single-btn"><i className="bi bi-arrow-left"></i>View Single File</RouterLink>
+          <RouterLink to="/" className="view-single-btn"><i className="bi bi-arrow-left"></i>View File</RouterLink>
         )}
       </div>
     </div>
