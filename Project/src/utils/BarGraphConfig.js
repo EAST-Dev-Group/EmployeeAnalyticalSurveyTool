@@ -43,30 +43,36 @@ export function DefaultSatisfactionGraph(){
         orgMap[org][rating].count += 1;
       });
 
-      console.log(orgMap);
+      console.log(orgMap[org][rating]);
+
       /*
-      // Create series data with averaged ratings rounded to 2 decimal places
+      // Create series data with counted ratings for each CSIT Org
       const series = Object.keys(orgMap).map(org => {
-        const data = allDates.map(dateStr => {
-          const dateData = orgMap[org][dateStr];
-          if (!dateData) return null;
-          // Calculate average rating and round to 2 decimal places
-          return Number((dateData.sum / dateData.count).toFixed(2));
+        const data = Object.keys(orgMap).map(rating => {
+          const ratingCountData = orgMap[org][rating];
+          if (!ratingCountData) return null;
+          // Return counts for current rating
+          return Number(ratingCountData.count);
         });
 
         return {
-          name: org,
-          data: data
+          label: org,
+          data: data,
         };
+      });
+      */
+
+      /*
+      const xAxis = Object.keys(orgMap).map(rating => {
+        return{
+          scaleType: 'band',
+          data: Number(rating) + " Stars",
+        }
       });
 
       setChartData({
-        organizations: Object.keys(orgMap),
-        dates: allDates.map(dateStr => {
-          const [year, month, day] = dateStr.split('-').map(Number);
-          return new Date(year, month - 1, day);
-        }),
-        series: series
+        xAxis: xAxis,
+        series: series,
       });
       */
     }
@@ -75,6 +81,7 @@ export function DefaultSatisfactionGraph(){
   if(chartData && chartData.length <= 0){
     fetchData();
   }
+  console.log(chartData);
   //return chartData;
   return null;
 }
