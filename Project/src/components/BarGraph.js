@@ -10,12 +10,12 @@ const BarGraph = () => {
     <div style={{ width: '100%', height: 300, marginTop: '20px' }}>
       <BarChart
         xAxis={[{ 
-          data: data.map(item => item.rating),
+          data: [1,2,4,5,9],
           scaleType: 'band',
         }]}
         series={[
           {
-            data: data.map(item => item.count),
+            data: [1,2,3,4,5],
             area: true,
           },
         ]}
