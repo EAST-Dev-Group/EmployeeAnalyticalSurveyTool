@@ -28,11 +28,11 @@ export function DefaultSatisfactionGraph(){
        // Group data by organization and Satisfaction Ratings
       const orgMap = {};
       validData.forEach(item => {
-      const org = item["CSIT Org"];
-      const rating = parseFloat(item["Satisfaction Rating"]);
+        const org = item["CSIT Org"];
+        const rating = parseFloat(item["Satisfaction Rating"]);
         if (!orgMap[org]) {
-        orgMap[org] = {};
-      }
+          orgMap[org] = {};
+        }
         if (!orgMap[org][rating]) {
           orgMap[org][rating] = {
             count: 0
@@ -43,12 +43,14 @@ export function DefaultSatisfactionGraph(){
         orgMap[org][rating].count += 1;
       });
 
-      console.log(orgMap[org][rating]);
+      // Get all unique ratings
+      const allRatings = [...new Set(validData.map(item => item["Satisfaction Rating"]
+      ))].sort();
+      
 
-      /*
       // Create series data with counted ratings for each CSIT Org
       const series = Object.keys(orgMap).map(org => {
-        const data = Object.keys(orgMap).map(rating => {
+        const data = allRatings.map(rating => {
           const ratingCountData = orgMap[org][rating];
           if (!ratingCountData) return null;
           // Return counts for current rating
@@ -60,28 +62,24 @@ export function DefaultSatisfactionGraph(){
           data: data,
         };
       });
-      */
 
-      /*
-      const xAxis = Object.keys(orgMap).map(rating => {
-        return{
-          scaleType: 'band',
-          data: Number(rating) + " Stars",
-        }
+      let xAxisArr = [];
+      allRatings.forEach((rating) => {
+        xAxisArr.push(rating + " Star");
       });
+      const xAxis = [{scaleType: 'band', data: xAxisArr}];
 
       setChartData({
         xAxis: xAxis,
         series: series,
-      });
-      */
+      })
     }
   }
   //Used to break infinite loops.
   if(chartData && chartData.length <= 0){
     fetchData();
   }
-  console.log(chartData);
+  //console.log(chartData);
   //return chartData;
   return null;
 }
