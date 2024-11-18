@@ -5,7 +5,10 @@ import axios from 'axios';
 
 //Functions & Vars Here
 export function DefaultSatisfactionGraph(){
-  const [chartData, setChartData] = useState([]);
+  const [chartData, setChartData] = useState({
+    series: []
+  });
+
 
   //Fetches excel data from Server
   const fetchData = async () => {
@@ -58,30 +61,23 @@ export function DefaultSatisfactionGraph(){
         });
 
         return {
-          label: org,
+          name: org,
           data: data,
         };
       });
 
-      let xAxisArr = [];
-      allRatings.forEach((rating) => {
-        xAxisArr.push(rating + " Star");
-      });
-      const xAxis = [{scaleType: 'band', data: xAxisArr}];
-
       setChartData({
-        xAxis: xAxis,
         series: series,
       })
     }
   }
   //Used to break infinite loops.
-  if(chartData && chartData.length <= 0){
+  useEffect(() => {
     fetchData();
-  }
+  }, []);
   //console.log(chartData);
-  //return chartData;
-  return null;
+  return chartData;
+  //return null;
 }
 //For future iterations or additions all that would need done is adding another function following the above function as a template.
 //fetchData currently fetches data from the currently uploaded datasheet, but can be replaced with fetchAllData as seen in DataDisplay.js, line 104-111
