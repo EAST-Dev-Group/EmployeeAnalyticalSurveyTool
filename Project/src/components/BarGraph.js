@@ -34,6 +34,9 @@ const BarGraph = () => {
           data: ["1 Star","2 Star", "3 Star","4 Star", "5 Star"],
           scaleType: 'band',
         }]}
+        yAxis={[{
+          label: 'Satisfaction Ratings',
+        }]}
         series={chartData.series.map((series, index) => ({
           data: series.data,
           label: series.name,
