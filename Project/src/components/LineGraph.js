@@ -13,46 +13,98 @@ import {
   Divider 
 } from '@mui/material';
 
-const LineGraph = () => {
+const LineGraph = ({ data, orgColorMap: existingColorMap, onColorMapUpdate }) => {
 
-  const colors = [
-    '#FF0000',   // Red
-    '#FFA500',   // Orange
-    '#FFD700',   // Gold
-    '#32CD32',   // Lime Green
-    '#0000FF',   // Blue
-    '#8A2BE2',   // Blue Violet
-    '#FF1493',   // Deep Pink
-    '#00CED1',   // Dark Turquoise
-    '#FF8C00',   // Dark Orange
-    '#4B0082',   // Indigo
-    '#008000',   // Green
-    '#BA55D3',   // Medium Orchid
-    '#CD853F',   // Peru
-    '#00FF7F',   // Spring Green
-    '#FF69B4',   // Hot Pink
+  const baseColors = [
+    // Dutch Field color palette
+    "#e60049", 
+    "#0bb4ff", 
+    "#50e991", 
+    "#e6d800", 
+    "#9b19f5", 
+    "#ffa300", 
+    "#dc0ab4", 
+    "#b3d4ff", 
+    "#00bfa0"
   ];
 
   const [timeFrame, setTimeFrame] = useState('daily');
   const [customDays, setCustomDays] = useState('');
-  const chartData = DefaultSatisfactionGraph(timeFrame, customDays);
+  // Pass data to DefaultSatisfactionGraph
+  const chartData = DefaultSatisfactionGraph(timeFrame, customDays, data);
   const [selectedOrgs, setSelectedOrgs] = useState([]);
-  const [orgColorMap, setOrgColorMap] = useState({});
-  const [isInitialLoad, setIsInitialLoad] = useState(true);  // Add this state
+  const [localOrgColorMap, setLocalOrgColorMap] = useState({});
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
   const filteredChartData = processSelectedOrgs(chartData, selectedOrgs);
+
+  // Function to shift color
+  const shiftColor = (hex, offset) => {
+    // Convert hex to RGB
+    const r = parseInt(hex.slice(1,3), 16);
+    const g = parseInt(hex.slice(3,5), 16);
+    const b = parseInt(hex.slice(5,7), 16);
+    
+    // Apply offset to RGB values cyclically
+    const shift = (value, offset) => {
+        // Use modulo to cycle through values
+        let newVal = (value + offset) % 256;
+        // If value goes negative, wrap around to positive
+        if (newVal < 0) newVal += 256;
+        return newVal;
+    };
+
+    // Shift differently for each component to create color variation
+    const rr = shift(r, offset).toString(16).padStart(2, '0');
+    const gg = shift(g, offset * 2).toString(16).padStart(2, '0');  // Double shift for green
+    const bb = shift(b, offset * 3).toString(16).padStart(2, '0');  // Triple shift for blue
+    
+    return `#${rr}${gg}${bb}`;
+  };
+
+  // Function to generate color palette based on number of organizations
+  const generateColorPalette = (organizations) => {
+    const colorMap = {};
+    let offset = 0;
+    const offsetStep = 25; // Adjust this value to control how much colors shift
+    
+    organizations.forEach((org, index) => {
+        if (index < baseColors.length) {
+            // Use base colors first
+            colorMap[org] = baseColors[index];
+        } else {
+            // Generate shifted colors when we run out of base colors
+            const baseColorIndex = index % baseColors.length;
+            offset = Math.floor(index / baseColors.length) * offsetStep;
+            colorMap[org] = shiftColor(baseColors[baseColorIndex], offset);
+        }
+    });
+    
+    return colorMap;
+  };
 
   // Create and maintain color mapping
   useEffect(() => {
-    if (chartData.organizations && chartData.organizations.length > 0 && Object.keys(orgColorMap).length === 0) {
+    if (chartData.organizations && chartData.organizations.length > 0) {
+      const sortedOrgs = [...chartData.organizations].sort((a, b) => a.localeCompare(b));
       const newColorMap = {};
-      chartData.organizations.forEach((org, index) => {
-        // Cycle through colors if more orgs than colors 
-        // (Will be changed with coloring algorithm)
-        newColorMap[org] = colors[index % colors.length];
+      sortedOrgs.forEach((org) => {
+        // Use existing color if available, otherwise assign new color
+        if (!existingColorMap[org] && !localOrgColorMap[org]) {
+          const generatedColors = generateColorPalette(sortedOrgs);
+          newColorMap[org] = generatedColors[org];
+        }
       });
-      setOrgColorMap(newColorMap);
+
+      // Only update if we have new organizations
+      if (Object.keys(newColorMap).length > 0) {
+        setLocalOrgColorMap(prev => ({...prev, ...newColorMap}));
+        onColorMapUpdate(newColorMap);
+      }
     }
-  }, [chartData.organizations]);
+  }, [chartData.organizations, existingColorMap]);
+
+  // Use combined color maps for rendering
+  const combinedColorMap = {...existingColorMap, ...localOrgColorMap};
 
   // Select all orgs by default only on initial load
   useEffect(() => {
@@ -77,10 +129,10 @@ const LineGraph = () => {
   };
 
   return (
-    //Grey box
+    //Gray box
     <div style={{ 
       width: '94%',
-      backgroundColor: '#f5f5f5', 
+      backgroundColor: '#f5f5f5',
       borderRadius: '15px',
       border: '1px solid #e0e0e0',
       padding: '20px',
@@ -160,7 +212,7 @@ const LineGraph = () => {
               <ListItemText primary="Select All" />
             </MenuItem>
             <Divider />
-            {chartData.organizations.map((org) => (
+            {chartData.organizations.sort((a, b) => a.localeCompare(b)).map((org) => (
               <MenuItem key={org} value={org}>
                 <Checkbox checked={selectedOrgs.includes(org)} />
                 <ListItemText primary={org} />
@@ -206,7 +258,7 @@ const LineGraph = () => {
             label: series.name,
             showMark: true,
             connectNulls: true,
-            color: orgColorMap[series.name],
+            color: combinedColorMap[series.name],
             valueFormatter: (value) => value !== null ? value.toFixed(2) : undefined,
           }))}
           tooltip={{

@@ -8,13 +8,32 @@ import DateRange from './daterange.js';
 function ExpandableCell({ value }) {
   const [expanded, setExpanded] = useState(false);
 
+  // Function to format text with line breaks
+  const formatText = (text) => {
+    if (!text) return '';
+    return text.split('\n').map((line, index) => (
+      <React.Fragment key={index}>
+        {line.replace(/\s/g, '\u00A0')}
+        {index !== text.split('\n').length - 1 && <br />}
+      </React.Fragment>
+    ));
+  };
+
   return (
-    <div>
-      {expanded ? value : value.slice(0, 200)}&nbsp;
+    <div style={{ 
+      whiteSpace: expanded ? 'pre-wrap' : 'normal',
+      wordBreak: 'break-word',
+    }}>
+      {expanded ? formatText(value) : value.slice(0, 200)}&nbsp;
       {value && value.length > 200 && (
         <Link
           component="button"
-          sx={{ fontSize: 'inherit', letterSpacing: 'inherit' }}
+          sx={{ 
+            fontSize: 'inherit', 
+            letterSpacing: 'inherit',
+            verticalAlign: 'baseline',
+            marginLeft: '4px'
+          }}
           onClick={() => setExpanded(!expanded)}
         >
           {expanded ? 'view less' : 'view more'}
@@ -24,7 +43,7 @@ function ExpandableCell({ value }) {
   );
 }
 
-function DataDisplay({ view, data: initialData }) {
+function DataDisplay({ view, data: initialData, onDataFiltered }) {
   const [displayData, setDisplayData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [columns, setColumns] = useState([]);
@@ -44,14 +63,21 @@ function DataDisplay({ view, data: initialData }) {
   useEffect(() => {
     if (dateRange[0] && dateRange[1]) {
       const [start, end] = dateRange;
-      setFilteredData(displayData.filter(row => {
+      const newFilteredData = displayData.filter(row => {
         const date = new Date(row['Recorded Date']);
         return date >= start.toDate() && date <= end.toDate();
-      }));
+      });
+      setFilteredData(newFilteredData);
+      if (onDataFiltered) {  // Add check in case onDataFiltered is not provided
+        onDataFiltered(newFilteredData);
+      }
     } else {
       setFilteredData(displayData);
+      if (onDataFiltered) {  // Add check in case onDataFiltered is not provided
+        onDataFiltered(displayData);
+      }
     }
-  }, [dateRange, displayData]);
+  }, [dateRange, displayData], onDataFiltered);
 
   const processData = (data) => {
     if (data && data.length > 0) {
