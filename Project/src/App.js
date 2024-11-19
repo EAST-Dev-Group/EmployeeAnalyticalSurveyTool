@@ -6,6 +6,8 @@ import BarGraph from './components/BarGraph';
 import PieGraph from './components/PieGraph';
 import CustomUploader from './components/CustomUploader';
 import Header from './components/Header';
+import GraphWrapper from './components/GraphWrapper';
+
 
 function App() {
   const [uploadedData, setUploadedData] = useState(null);
@@ -23,15 +25,21 @@ function App() {
               <Header />
               <CustomUploader onUpload={handleUpload} />
               <DataDisplay view="single" data={uploadedData} />
-              <LineGraph data={uploadedData} />
-              <BarGraph data={uploadedData} />
-              <PieGraph data={uploadedData} />
+              <GraphWrapper title="Line Graph">
+                <LineGraph data={uploadedData} />
+              </GraphWrapper>
+              <GraphWrapper title="Bar Graph">
+                <BarGraph data={uploadedData} />
+              </GraphWrapper>
+              <GraphWrapper title="Pie Graph">
+                <PieGraph data={uploadedData} />
+              </GraphWrapper>
 
             </>
           } />
           <Route path="/all-data" element={
             <>
-              <h1>All Survey Responses</h1>
+              <Header />
               <DataDisplay view="all" />
               <LineGraph />
               <BarGraph />
