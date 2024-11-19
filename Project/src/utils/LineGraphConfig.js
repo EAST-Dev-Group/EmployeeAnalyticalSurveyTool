@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 
 // Define available time grouping options
 export const timeFrameOptions = [
@@ -22,21 +21,13 @@ export function processSelectedOrgs(chartData, selectedOrgs) {
 }
 
 // Main function to fetch and process satisfaction data
-export function DefaultSatisfactionGraph(timeFrame = 'daily', customDays = '') {
+export function DefaultSatisfactionGraph(timeFrame = 'daily', customDays = '', 
+                                        /*new*/inputData = []) {
   const [chartData, setChartData] = useState({
     organizations: [],
     dates: [],
     series: []
   });
-
-  const fetchData = async () => {
-    try {
-      const response = await axios.get('/api/data');
-      processData(response.data);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
 
   // Calculate number of days for time grouping
   const getDaysBetween = (timeFrame) => {
@@ -84,6 +75,9 @@ export function DefaultSatisfactionGraph(timeFrame = 'daily', customDays = '') {
         orgMap[org][formattedDateStr].count += 1;
       });
 
+      // Sort organizations alphabetically
+      const sortedOrgs = Object.keys(orgMap).sort((a, b) => a.localeCompare(b));
+
       // Get all unique dates and sort them
       const allDates = [...new Set(validData.map(item => 
         item["Recorded Date"].split(' ')[0]
@@ -96,7 +90,7 @@ export function DefaultSatisfactionGraph(timeFrame = 'daily', customDays = '') {
       });
 
       // Create initial data series for each org
-      let processedSeries = Object.keys(orgMap).map(org => {
+      let processedSeries = sortedOrgs.map(org => {
         const data = allDates.map(dateStr => {
           const dateData = orgMap[org][dateStr];
           if (!dateData) return null;
@@ -158,9 +152,9 @@ export function DefaultSatisfactionGraph(timeFrame = 'daily', customDays = '') {
         processedSeries = newSeries;
       }
 
-      // Update chart data state
+      // Update chart data state with sorted organizations
       setChartData({
-        organizations: Object.keys(orgMap),
+        organizations: sortedOrgs,
         dates: processedDates,
         series: processedSeries
       });
@@ -169,8 +163,10 @@ export function DefaultSatisfactionGraph(timeFrame = 'daily', customDays = '') {
 
   // Fetch data when time frame changes
   useEffect(() => {
-    fetchData();
-  }, [timeFrame, customDays]);
+    if (inputData && inputData.length > 0) {
+      processData(inputData);
+    }
+  }, [timeFrame, customDays, inputData]);
 
   return chartData;
 }
