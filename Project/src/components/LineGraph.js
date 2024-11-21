@@ -13,7 +13,7 @@ import {
   Divider 
 } from '@mui/material';
 
-const LineGraph = ({ data, orgColorMap: existingColorMap, onColorMapUpdate }) => {
+export const LineGraph = ({ data, orgColorMap: existingColorMap, onColorMapUpdate }) => {
 
   const baseColors = [
     // Dutch Field color palette
@@ -281,5 +281,3 @@ const LineGraph = ({ data, orgColorMap: existingColorMap, onColorMapUpdate }) =>
     </div>
   );
 };
-
-export default LineGraph;

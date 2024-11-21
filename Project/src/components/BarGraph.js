@@ -3,7 +3,7 @@ import React from 'react';
 import { BarChart } from '@mui/x-charts/BarChart';
 import { DefaultSatisfactionGraph } from '../utils/BarGraphConfig';
 
-const BarGraph = () => {
+export const BarGraph = () => {
   const chartData = DefaultSatisfactionGraph();
 
   console.log(chartData);
@@ -46,7 +46,3 @@ const BarGraph = () => {
     </div>
   );
 };
-//Need to make this display each CSIT org.
-//Can make a dataset for each and go from there
-//https://mui.com/x/react-charts/bars/
-export default BarGraph;

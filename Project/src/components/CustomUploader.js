@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import './CustomUploader.css';
 
-const CustomUploader = ({ onUpload }) => {
+export const CustomUploader = ({ onUpload }) => {
   const [files, setFiles] = useState([]);
   const [dragActive, setDragActive] = useState(false);
   const [uploadStatus, setUploadStatus] = useState({});
@@ -176,5 +176,3 @@ const CustomUploader = ({ onUpload }) => {
     </div>
   );
 };
-
-export default CustomUploader;

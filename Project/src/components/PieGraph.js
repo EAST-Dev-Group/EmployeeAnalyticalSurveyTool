@@ -5,7 +5,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import Box from '@mui/material/Box';
 import axios from 'axios';
 
-const PieGraph = () => {
+export const PieGraph = () => {
   const [data, setData] = useState([]);
   const [selectedOrg1, setSelectedOrg1] = useState('');
   const [selectedOrg2, setSelectedOrg2] = useState('');
@@ -185,5 +185,3 @@ const PieGraph = () => {
     </div>
   );
 };
-
-export default PieGraph;
