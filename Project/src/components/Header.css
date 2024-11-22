@@ -4,13 +4,14 @@
     color: #10384f;
     font-size: 26px;
     text-align: center;
-    margin: 0;
+    margin: auto;
     padding: 10px 0;
     font-weight: 200;
     position: relative;
     width: 100%;
     background-color: white;
     transition: all 0.3s ease;
+    margin-bottom: 8px;
   }
   
   .sticky {
