@@ -11,23 +11,17 @@ const BarGraph = () => {
 
   console.log(chartData);
 
-  // Extended color palette (15 distinct colors)
   const colors = [
-    '#FF0000',   // Red
-    '#FFA500',   // Orange
-    '#FFD700',   // Gold
-    '#32CD32',   // Lime Green
-    '#0000FF',   // Blue
-    '#8A2BE2',   // Blue Violet
-    '#FF1493',   // Deep Pink
-    '#00CED1',   // Dark Turquoise
-    '#FF8C00',   // Dark Orange
-    '#4B0082',   // Indigo
-    '#008000',   // Green
-    '#BA55D3',   // Medium Orchid
-    '#CD853F',   // Peru
-    '#00FF7F',   // Spring Green
-    '#FF69B4',   // Hot Pink
+    // Dutch Field color palette
+    "#e60049", 
+    "#0bb4ff", 
+    "#50e991", 
+    "#e6d800", 
+    "#9b19f5", 
+    "#ffa300", 
+    "#dc0ab4", 
+    "#b3d4ff", 
+    "#00bfa0"
   ];
 
   // For downloading the graph as png

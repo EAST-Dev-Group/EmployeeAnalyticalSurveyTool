@@ -15,6 +15,19 @@ const PieGraph = () => {
   const [gridData, setGridData] = useState([]); // Data for DataGrid
   const chartRef = useRef(null); // Ref for capturing the chart
 
+  const colors = [
+    // Dutch Field color palette
+    "#e60049", 
+    "#0bb4ff", 
+    "#50e991", 
+    "#e6d800", 
+    "#9b19f5", 
+    "#ffa300", 
+    "#dc0ab4", 
+    "#b3d4ff", 
+    "#00bfa0"
+  ];
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -143,6 +156,7 @@ const PieGraph = () => {
           <Box flexGrow={1}>
             <Typography># of Ratings from Each CSIT Org:</Typography>
             <PieChart
+              colors={colors}
               series={[
                 {
                   data: data.map(item => ({ label: item.label, value: item.totalRatings })),
@@ -201,6 +215,7 @@ const PieGraph = () => {
             <Box>
               <Typography variant="h6">{`Ratings Breakdown for ${selectedOrg1}`}</Typography>
               <PieChart
+                colors={colors}
                 series={[
                   {
                     data: filteredData1,
@@ -217,6 +232,7 @@ const PieGraph = () => {
             <Box>
               <Typography variant="h6">{`Ratings Breakdown for ${selectedOrg2}`}</Typography>
               <PieChart
+                colors={colors}
                 series={[
                   {
                     data: filteredData2,
