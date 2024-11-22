@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { PieChart } from '@mui/x-charts/PieChart';
-import { Typography, MenuItem, Select, FormControl, InputLabel } from '@mui/material';
+import { Typography, MenuItem, Select, FormControl, InputLabel, Button } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import Box from '@mui/material/Box';
 import axios from 'axios';
+import html2canvas from 'html2canvas';
 
 const PieGraph = () => {
   const [data, setData] = useState([]);
@@ -12,6 +13,7 @@ const PieGraph = () => {
   const [filteredData1, setFilteredData1] = useState([]);
   const [filteredData2, setFilteredData2] = useState([]);
   const [gridData, setGridData] = useState([]); // Data for DataGrid
+  const chartRef = useRef(null); // Ref for capturing the chart
 
   useEffect(() => {
     const fetchData = async () => {
@@ -94,6 +96,17 @@ const PieGraph = () => {
     }
   };
 
+  // For downloading graph as png
+  const handleDownload = async () => {
+    if (chartRef.current) {
+      const canvas = await html2canvas(chartRef.current);
+      const link = document.createElement('a');
+      link.download = 'pie-graph.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+  };
+
   const handleOrg1Change = (event) => {
     setSelectedOrg1(event.target.value);
   };
@@ -103,23 +116,58 @@ const PieGraph = () => {
   };
 
   return (
-    <div style={{ width: '100%', marginTop: '20px' }}>
-      <Box display="flex" flexDirection="row" alignItems="center">
-        <Box flexGrow={1}>
-          <Typography># of Ratings from Each CSIT Org:</Typography>
-          <PieChart
-            series={[
-              {
-                data: data.map(item => ({ label: item.label, value: item.totalRatings })),
-                labelPosition: 'outside',
-                onClick: handlePieClick, // Add click event to the pie chart
-              },
-            ]}
-            width={1100}
-            height={450}
-          />
+    <div style={{
+      width: '94%',
+      backgroundColor: '#f5f5f5',
+      borderRadius: '15px',
+      border: '1px solid #e0e0e0',
+      padding: '20px',
+      marginTop: '20px',
+      marginLeft: 'auto',
+      marginRight: 'auto',
+      boxSizing: 'border-box',
+      boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
+    }}>
+      <div ref={chartRef} style={{
+        width: '100%',
+        height: 510,
+        backgroundColor: 'white',
+        borderRadius: '10px',
+        border: '1px solid #e0e0e0',
+        padding: '20px',
+        boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
+        boxSizing: 'border-box',
+        overflow: 'hidden',
+      }}>
+        <Box display="flex" flexDirection="row" alignItems="center">
+          <Box flexGrow={1}>
+            <Typography># of Ratings from Each CSIT Org:</Typography>
+            <PieChart
+              series={[
+                {
+                  data: data.map(item => ({ label: item.label, value: item.totalRatings })),
+                  labelPosition: 'outside',
+                  onClick: handlePieClick, // Add click event to the pie chart
+                },
+              ]}
+              width={1100}
+              height={450}
+            />
+          </Box>
         </Box>
-      </Box>
+      </div>
+      <div style={{
+        marginTop: '20px', // Adds space between the chart and the button
+        textAlign: 'right', // Aligns the button to the right
+      }}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleDownload}
+        >
+          Download as PNG
+        </Button>
+      </div>
 
       {/* Comparison Section */}
       <Box mt={4}>

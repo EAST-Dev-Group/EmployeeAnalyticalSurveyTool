@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { LineChart } from '@mui/x-charts/LineChart';
 import { DefaultSatisfactionGraph, timeFrameOptions, processSelectedOrgs } from '../utils/LineGraphConfig';
 import { 
@@ -10,10 +10,13 @@ import {
   Select, 
   Checkbox, 
   ListItemText,
-  Divider 
+  Divider,
+  Button
 } from '@mui/material';
+import html2canvas from 'html2canvas';
 
 const LineGraph = ({ data, orgColorMap: existingColorMap, onColorMapUpdate }) => {
+  const graphRef = useRef(null);
 
   const baseColors = [
     // Dutch Field color palette
@@ -36,6 +39,17 @@ const LineGraph = ({ data, orgColorMap: existingColorMap, onColorMapUpdate }) =>
   const [localOrgColorMap, setLocalOrgColorMap] = useState({});
   const [isInitialLoad, setIsInitialLoad] = useState(true);
   const filteredChartData = processSelectedOrgs(chartData, selectedOrgs);
+
+  // For downloading as png
+  const handleDownload = async () => {
+    if (graphRef.current) {
+      const canvas = await html2canvas(graphRef.current);
+      const link = document.createElement('a');
+      link.download = 'line-graph.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+  };
 
   // Function to shift color
   const shiftColor = (hex, offset) => {
@@ -223,7 +237,7 @@ const LineGraph = ({ data, orgColorMap: existingColorMap, onColorMapUpdate }) =>
       </Stack>
       
       {/*White box*/}
-      <div style={{ 
+      <div ref={graphRef} style={{
         width: '100%', 
         height: 450,
         backgroundColor: 'white',
@@ -277,6 +291,15 @@ const LineGraph = ({ data, orgColorMap: existingColorMap, onColorMapUpdate }) =>
             },
           }}
         />
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '10px' }}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleDownload}
+        >
+          Download as PNG
+        </Button>
       </div>
     </div>
   );
