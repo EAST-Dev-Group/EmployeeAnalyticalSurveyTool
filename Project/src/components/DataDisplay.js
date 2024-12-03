@@ -55,9 +55,7 @@ export function DataDisplay({ view, data: initialData, onDataFiltered }) {
       processData(initialData);
     } else if (view === 'all') {
       fetchAllData();
-    } else if (view === 'single' && !initialData) {
-      fetchData();
-    }
+    } 
   }, [view, initialData]);
 
   useEffect(() => {

@@ -7,6 +7,7 @@ import { PieGraph } from './components/PieGraph';
 import { CustomUploader } from './components/CustomUploader';
 import { Header }  from './components/Header';
 
+
 function App() {
   const [uploadedData, setUploadedData] = useState(null);
   // Pass data from DataDisplay.js
