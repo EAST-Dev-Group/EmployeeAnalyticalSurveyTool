@@ -5,7 +5,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import Link from '@mui/material/Link';
 import DateRange from './daterange.js';
 
-function ExpandableCell({ value }) {
+export function ExpandableCell({ value }) {
   const [expanded, setExpanded] = useState(false);
 
   // Function to format text with line breaks
@@ -43,7 +43,7 @@ function ExpandableCell({ value }) {
   );
 }
 
-function DataDisplay({ view, data: initialData, onDataFiltered }) {
+export function DataDisplay({ view, data: initialData, onDataFiltered }) {
   const [displayData, setDisplayData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [columns, setColumns] = useState([]);
@@ -167,5 +167,3 @@ function DataDisplay({ view, data: initialData, onDataFiltered }) {
     </div>
   );
 }
-
-export default DataDisplay;

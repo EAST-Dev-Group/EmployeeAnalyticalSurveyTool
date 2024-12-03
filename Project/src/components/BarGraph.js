@@ -5,7 +5,7 @@ import { DefaultSatisfactionGraph } from '../utils/BarGraphConfig';
 import html2canvas from 'html2canvas';
 import { Button } from '@mui/material';
 
-const BarGraph = () => {
+export const BarGraph = () => {
   const chartData = DefaultSatisfactionGraph();
   const chartRef = useRef(null);
 
@@ -86,7 +86,3 @@ const BarGraph = () => {
     </div>
   );
 };
-//Need to make this display each CSIT org.
-//Can make a dataset for each and go from there
-//https://mui.com/x/react-charts/bars/
-export default BarGraph;

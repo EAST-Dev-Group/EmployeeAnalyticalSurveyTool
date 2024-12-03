@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import html2canvas from 'html2canvas';
 
-const LineGraph = ({ data, orgColorMap: existingColorMap, onColorMapUpdate }) => {
+export const LineGraph = ({ data, orgColorMap: existingColorMap, onColorMapUpdate }) => {
   const graphRef = useRef(null);
 
   const baseColors = [
@@ -304,5 +304,3 @@ const LineGraph = ({ data, orgColorMap: existingColorMap, onColorMapUpdate }) =>
     </div>
   );
 };
-
-export default LineGraph;

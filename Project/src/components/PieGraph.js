@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 import axios from 'axios';
 import html2canvas from 'html2canvas';
 
-const PieGraph = () => {
+export const PieGraph = () => {
   const [data, setData] = useState([]);
   const [selectedOrg1, setSelectedOrg1] = useState('');
   const [selectedOrg2, setSelectedOrg2] = useState('');
@@ -249,5 +249,3 @@ const PieGraph = () => {
     </div>
   );
 };
-
-export default PieGraph;
