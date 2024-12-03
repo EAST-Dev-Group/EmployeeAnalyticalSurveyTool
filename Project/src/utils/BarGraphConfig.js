@@ -9,7 +9,6 @@ export function DefaultSatisfactionGraph(){
     series: []
   });
 
-
   //Fetches excel data from Server
   const fetchData = async () => {
       try {

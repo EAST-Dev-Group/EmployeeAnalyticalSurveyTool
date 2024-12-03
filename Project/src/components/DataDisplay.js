@@ -43,7 +43,7 @@ export function ExpandableCell({ value }) {
   );
 }
 
-function DataDisplay({ view, data: initialData, onDataFiltered }) {
+export function DataDisplay({ view, data: initialData, onDataFiltered }) {
   const [displayData, setDisplayData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [columns, setColumns] = useState([]);
