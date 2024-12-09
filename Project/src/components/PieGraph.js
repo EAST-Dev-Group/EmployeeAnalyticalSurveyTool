@@ -6,7 +6,8 @@ import Box from '@mui/material/Box';
 import axios from 'axios';
 import html2canvas from 'html2canvas';
 
-export const PieGraph = () => {
+
+export const PieGraph = ({ data: inputData, orgColorMap }) => {
   const [data, setData] = useState([]);
   const [selectedOrg1, setSelectedOrg1] = useState('');
   const [selectedOrg2, setSelectedOrg2] = useState('');
@@ -15,7 +16,7 @@ export const PieGraph = () => {
   const [gridData, setGridData] = useState([]); // Data for DataGrid
   const chartRef = useRef(null); // Ref for capturing the chart
 
-  const colors = [
+  const baseColors = [
     // Dutch Field color palette
     "#e60049", 
     "#0bb4ff", 
@@ -28,18 +29,61 @@ export const PieGraph = () => {
     "#00bfa0"
   ];
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('/api/data');
-        processData(response.data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
+  // Function to shift color
+  const shiftColor = (hex, offset) => {
+    // Convert hex to RGB
+    const r = parseInt(hex.slice(1,3), 16);
+    const g = parseInt(hex.slice(3,5), 16);
+    const b = parseInt(hex.slice(5,7), 16);
+    
+    // Apply offset to RGB values cyclically
+    const shift = (value, offset) => {
+        // Use modulo to cycle through values
+        let newVal = (value + offset) % 256;
+        // If value goes negative, wrap around to positive
+        if (newVal < 0) newVal += 256;
+        return newVal;
     };
 
-    fetchData();
-  }, []);
+    // Shift differently for each component to create color variation
+    const rr = shift(r, offset).toString(16).padStart(2, '0');
+    const gg = shift(g, offset * 2).toString(16).padStart(2, '0');  // Double shift for green
+    const bb = shift(b, offset * 3).toString(16).padStart(2, '0');  // Triple shift for blue
+    
+    return `#${rr}${gg}${bb}`;
+  };
+
+  // Function to generate color palette based on number of organizations
+  const generateColorPalette = (organizations) => {
+    const colorMap = {};
+    let offset = 0;
+    const offsetStep = 25; // Adjust this value to control how much colors shift
+    
+    organizations.forEach((org, index) => {
+        if (index < baseColors.length) {
+            // Use base colors first
+            colorMap[org] = baseColors[index];
+        } else {
+            // Generate shifted colors when we run out of base colors
+            const baseColorIndex = index % baseColors.length;
+            offset = Math.floor(index / baseColors.length) * offsetStep;
+            colorMap[org] = shiftColor(baseColors[baseColorIndex], offset);
+        }
+    });
+    
+    return colorMap;
+  };
+
+  // Get color for organization
+  const getOrgColor = (orgName, index) => {
+    if (orgColorMap && orgColorMap[orgName]) {
+      return orgColorMap[orgName];
+    }
+    
+    const organizations = data.map(item => item.label.split(' (')[0]).sort();
+    const generatedColors = generateColorPalette(organizations);
+    return generatedColors[orgName] || baseColors[index % baseColors.length];
+  };
 
   const processData = (data) => {
     if (data && data.length > 0) {
@@ -62,7 +106,10 @@ export const PieGraph = () => {
 
       const totalRatingsAcrossOrgs = validData.length;
 
-      const processedData = Object.keys(orgMap).map(org => ({
+      // Sort organizations alphabetically
+      const sortedOrgs = Object.keys(orgMap).sort((a, b) => a.localeCompare(b));
+
+      const processedData = sortedOrgs.map(org => ({
         label: `${org} (${((orgMap[org].length / totalRatingsAcrossOrgs) * 100).toFixed(2)}%)`,
         totalRatings: orgMap[org].length,
         ratings: orgMap[org],
@@ -71,6 +118,12 @@ export const PieGraph = () => {
       setData(processedData);
     }
   };
+
+  useEffect(() => {
+    if (inputData && inputData.length > 0) {
+      processData(inputData);
+    }
+  }, [inputData]);
 
   useEffect(() => {
     if (selectedOrg1) {
@@ -156,12 +209,15 @@ export const PieGraph = () => {
           <Box flexGrow={1}>
             <Typography># of Ratings from Each CSIT Org:</Typography>
             <PieChart
-              colors={colors}
               series={[
                 {
-                  data: data.map(item => ({ label: item.label, value: item.totalRatings })),
+                  data: data.map((item, index) => ({
+                    label: item.label,
+                    value: item.totalRatings,
+                    color: getOrgColor(item.label.split(' (')[0], index)
+                  })),
                   labelPosition: 'outside',
-                  onClick: handlePieClick, // Add click event to the pie chart
+                  onClick: handlePieClick,
                 },
               ]}
               width={1100}
@@ -215,7 +271,7 @@ export const PieGraph = () => {
             <Box>
               <Typography variant="h6">{`Ratings Breakdown for ${selectedOrg1}`}</Typography>
               <PieChart
-                colors={colors}
+                colors={baseColors}
                 series={[
                   {
                     data: filteredData1,
@@ -232,7 +288,7 @@ export const PieGraph = () => {
             <Box>
               <Typography variant="h6">{`Ratings Breakdown for ${selectedOrg2}`}</Typography>
               <PieChart
-                colors={colors}
+                colors={baseColors}
                 series={[
                   {
                     data: filteredData2,

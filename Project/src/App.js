@@ -47,8 +47,14 @@ function App() {
         orgColorMap={globalOrgColorMap}
         onColorMapUpdate={handleColorMapUpdate}
       />
-      <BarGraph data={uploadedData} />
-      <PieGraph data={uploadedData} />
+      <BarGraph 
+        data={singleFilteredData} 
+        orgColorMap={globalOrgColorMap} 
+      />
+      <PieGraph 
+        data={singleFilteredData} 
+        orgColorMap={globalOrgColorMap} 
+      />
     </>
   );
 
@@ -59,8 +65,14 @@ function App() {
         orgColorMap={globalOrgColorMap}
         onColorMapUpdate={handleColorMapUpdate}
       />
-      <BarGraph data={uploadedData} />
-      <PieGraph data={uploadedData} />
+      <BarGraph 
+        data={allFilteredData} 
+        orgColorMap={globalOrgColorMap} 
+      />
+      <PieGraph 
+        data={allFilteredData} 
+        orgColorMap={globalOrgColorMap} 
+      />
     </>
   );
 
