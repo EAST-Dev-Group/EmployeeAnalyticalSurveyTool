@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import DataDisplay from './components/DataDisplay';
-import LineGraph from './components/LineGraph';
-import BarGraph from './components/BarGraph';
-import PieGraph from './components/PieGraph';
-import CustomUploader from './components/CustomUploader';
-import Header from './components/Header';
+import { DataDisplay } from './components/DataDisplay';
+import { LineGraph } from './components/LineGraph';
+import { BarGraph } from './components/BarGraph';
+import { PieGraph } from './components/PieGraph';
+import { CustomUploader } from './components/CustomUploader';
+import { Header }  from './components/Header';
+
 
 function App() {
   const [uploadedData, setUploadedData] = useState(null);
@@ -46,8 +47,14 @@ function App() {
         orgColorMap={globalOrgColorMap}
         onColorMapUpdate={handleColorMapUpdate}
       />
-      <BarGraph data={uploadedData} />
-      <PieGraph data={uploadedData} />
+      <BarGraph 
+        data={singleFilteredData} 
+        orgColorMap={globalOrgColorMap} 
+      />
+      <PieGraph 
+        data={singleFilteredData} 
+        orgColorMap={globalOrgColorMap} 
+      />
     </>
   );
 
@@ -58,8 +65,14 @@ function App() {
         orgColorMap={globalOrgColorMap}
         onColorMapUpdate={handleColorMapUpdate}
       />
-      <BarGraph data={uploadedData} />
-      <PieGraph data={uploadedData} />
+      <BarGraph 
+        data={allFilteredData} 
+        orgColorMap={globalOrgColorMap} 
+      />
+      <PieGraph 
+        data={allFilteredData} 
+        orgColorMap={globalOrgColorMap} 
+      />
     </>
   );
 
