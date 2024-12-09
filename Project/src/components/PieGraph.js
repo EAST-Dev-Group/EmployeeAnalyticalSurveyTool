@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import axios from 'axios';
 import html2canvas from 'html2canvas';
 
+
 export const PieGraph = ({ data: inputData, orgColorMap }) => {
   const [data, setData] = useState([]);
   const [selectedOrg1, setSelectedOrg1] = useState('');

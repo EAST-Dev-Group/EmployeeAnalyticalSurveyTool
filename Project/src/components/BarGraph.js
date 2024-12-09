@@ -5,11 +5,13 @@ import { DefaultSatisfactionGraph } from '../utils/BarGraphConfig';
 import html2canvas from 'html2canvas';
 import { Button } from '@mui/material';
 
+
 export const BarGraph = ({ data, orgColorMap }) => {
   const chartData = DefaultSatisfactionGraph(data);
   const chartRef = useRef(null);
 
   console.log(chartData);
+
 
   const baseColors = [
     // Dutch Field color palette

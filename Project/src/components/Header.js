@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './Header.css';
 
-const Header = () => {
+export const Header = () => {
   const [isShrunk, setIsShrunk] = useState(false);
 
   useEffect(() => {
@@ -35,5 +35,3 @@ const Header = () => {
     </>
   );
 };
-
-export default Header;
