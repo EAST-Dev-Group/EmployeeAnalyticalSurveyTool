@@ -4,21 +4,10 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 //Functions & Vars Here
-export function DefaultSatisfactionGraph(){
+export function DefaultSatisfactionGraph(inputData = []){
   const [chartData, setChartData] = useState({
     series: []
   });
-
-
-  //Fetches excel data from Server
-  const fetchData = async () => {
-      try {
-        const response = await axios.get('/api/data');
-        processData(response.data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-  }
     
   // Process data for whole Bar Chart
   const processData = (data) => {
@@ -50,9 +39,11 @@ export function DefaultSatisfactionGraph(){
       const allRatings = [...new Set(validData.map(item => item["Satisfaction Rating"]
       ))].sort();
       
+      // Sort organizations alphabetically
+      const sortedOrgs = Object.keys(orgMap).sort((a, b) => a.localeCompare(b));
 
       // Create series data with counted ratings for each CSIT Org
-      const series = Object.keys(orgMap).map(org => {
+      const series = sortedOrgs.map(org => {
         const data = allRatings.map(rating => {
           const ratingCountData = orgMap[org][rating];
           if (!ratingCountData) return null;
@@ -71,13 +62,12 @@ export function DefaultSatisfactionGraph(){
       })
     }
   }
-  //Used to break infinite loops.
+
   useEffect(() => {
-    fetchData();
-  }, []);
-  //console.log(chartData);
+    if (inputData && inputData.length > 0) {
+      processData(inputData);
+    }
+  }, [inputData]);
+
   return chartData;
-  //return null;
 }
-//For future iterations or additions all that would need done is adding another function following the above function as a template.
-//fetchData currently fetches data from the currently uploaded datasheet, but can be replaced with fetchAllData as seen in DataDisplay.js, line 104-111
