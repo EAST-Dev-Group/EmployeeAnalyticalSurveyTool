@@ -1,8 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-export function DefaultPieGraph(inputData = []) {
+export function DefaultPieGraph() {
   const [chartData, setChartData] = useState([]);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get('/api/data');
+      processData(response.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
 
   const processData = (data) => {
     if (data && data.length > 0) {
@@ -46,10 +55,8 @@ export function DefaultPieGraph(inputData = []) {
   };
 
   useEffect(() => {
-    if (inputData && inputData.length > 0) {
-      processData(inputData);
-    }
-  }, [inputData]);
+    fetchData();
+  }, []);
 
   return chartData;
 }
